@@ -5,7 +5,7 @@ package logica;
 public class Categoria {
    private int idCategoria;
    private String nombreCategoria;
-   private String descuentoCategoria;
+   private String descripcionCategoria;
 
     public Categoria() {
     }
@@ -13,7 +13,7 @@ public class Categoria {
     public Categoria(int idCategoria, String nombreCategoria, String descuentoCategoria) {
         this.idCategoria = idCategoria;
         this.nombreCategoria = nombreCategoria;
-        this.descuentoCategoria = descuentoCategoria;
+        this.descripcionCategoria = descuentoCategoria;
     }
 
     public int getIdCategoria() {
@@ -32,13 +32,15 @@ public class Categoria {
         this.nombreCategoria = nombreCategoria;
     }
 
-    public String getDescuentoCategoria() {
-        return descuentoCategoria;
+    public String getDescripcionCategoria() {
+        return descripcionCategoria;
     }
 
-    public void setDescuentoCategoria(String descuentoCategoria) {
-        this.descuentoCategoria = descuentoCategoria;
+    public void setDescripcionCategoria(String descripcionCategoria) {
+        this.descripcionCategoria = descripcionCategoria;
     }
+
+
    
    
 }

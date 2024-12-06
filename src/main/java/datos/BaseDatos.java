@@ -7,6 +7,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import logica.Categoria;
 import logica.Producto;
 
 public class BaseDatos {
@@ -14,7 +17,7 @@ public class BaseDatos {
     Connection conn = null;
     PreparedStatement st = null;
     ResultSet rs = null;
-    
+
     public BaseDatos() {
         try {
 
@@ -22,7 +25,7 @@ public class BaseDatos {
 
         } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
-        } 
+        }
     }
 
     public void insertarProducto(Producto producto) {
@@ -30,8 +33,8 @@ public class BaseDatos {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Prueba", "postgres", "123");
             FileInputStream fis = new FileInputStream(producto.getFotoProducto());
-            
-            st = conn.prepareStatement("INSERT INTO producto (id_prod, nom_prod, desc_prod, stock_prod"
+
+            st = conn.prepareStatement("INSERT INTO productos (id_prod, nom_prod, desc_prod, stock_prod"
                     + "foto_prod, unidad_prod, precio_compra_prod, precio_venta_prod, existencias_prod"
                     + "id_categoria_prod, id_proveedor) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
 
@@ -54,6 +57,32 @@ public class BaseDatos {
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         } finally {
+            try {
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
+
+    public void insertarCategoriaProducto(Categoria categoria) {
+
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Prueba", "postgres", "123");
+            
+            String sql = "INSERT INTO categorias (nom_categoria_prod, desc_categoria_prod)"
+                    + "VALUES (?,?)";
+            st = conn.prepareStatement(sql);
+            st.setString(1, categoria.getNombreCategoria());
+            st.setString(2, categoria.getDescripcionCategoria());          
+            
+            st.executeUpdate();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally{
             try {
                 st.close();
                 conn.close();
