@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import logica.Categoria;
 import logica.Producto;
+import logica.Proveedor;
 
 public class BaseDatos {
 
@@ -31,7 +32,7 @@ public class BaseDatos {
     public void insertarProducto(Producto producto) {
 
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Prueba", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
             FileInputStream fis = new FileInputStream(producto.getFotoProducto());
 
             st = conn.prepareStatement("INSERT INTO productos (id_prod, nom_prod, desc_prod, stock_prod"
@@ -70,7 +71,7 @@ public class BaseDatos {
     public void insertarCategoriaProducto(Categoria categoria) {
 
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/Prueba", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
             
             String sql = "INSERT INTO categorias (nom_categoria_prod, desc_categoria_prod)"
                     + "VALUES (?,?)";
@@ -91,6 +92,41 @@ public class BaseDatos {
             }
         }
 
+    }
+    
+    public void insertarProveedor(Proveedor proveedor){
+        
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            
+            String sql = "INSERT INTO proveedores (nom_proveedor, dir_proveedor, "
+                    + "telefono_proveedor, email_proveedor, contacto_proveedor)"
+                    + "VALUES (?,?,?,?,?)";
+            
+            st = conn.prepareStatement(sql);
+            
+            st.setString(1, proveedor.getNombreProveedor());
+            st.setString(2, proveedor.getDireccionProveedor());
+            st.setString(3, proveedor.getTelefonoProveedor());
+            st.setString(4, proveedor.getEmailProveedor());
+            st.setString(5, proveedor.getContactoProveedor());
+            
+            st.executeUpdate();          
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally{
+            try {
+                conn.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        
+        
+        
+        
     }
 
 }
