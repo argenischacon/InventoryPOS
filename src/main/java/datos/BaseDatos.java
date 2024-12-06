@@ -123,10 +123,9 @@ public class BaseDatos {
                 ex.printStackTrace();
             }
         }
-        
-        
-        
-        
+   
     }
+    
+    
 
 }

@@ -2,15 +2,15 @@
 package logica;
 
 
-public class Venta_Productos {
+public class VentaProductos {
    private Venta venta;
    private Producto producto;
    private double cantidadVendida;
 
-    public Venta_Productos() {
+    public VentaProductos() {
     }
 
-    public Venta_Productos(Venta id_venta, Producto idProducto, double cantidadVendida) {
+    public VentaProductos(Venta id_venta, Producto idProducto, double cantidadVendida) {
         this.venta = id_venta;
         this.producto = idProducto;
         this.cantidadVendida = cantidadVendida;
