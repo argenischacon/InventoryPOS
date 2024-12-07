@@ -12,11 +12,11 @@ public class ProveedoresDialog extends javax.swing.JDialog {
         initComponents();
     }
 
-    public void addCategoriaListener(ProveedorAddedListener listener) {
+    public void addProveedorListener(ProveedorAddedListener listener) {
         this.proveedorAddedListener = listener;  // Guardamos el listener que se nos pasa
     }
 
-    private void onCategoriaAdded() {
+    private void onProveedorAdded() {
         if (proveedorAddedListener != null) {  // Solo notificamos si hay un listener registrado
             proveedorAddedListener.ProveedorAdded();  // Llamamos al método de notificación
         }

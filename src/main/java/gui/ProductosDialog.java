@@ -1,21 +1,37 @@
 package gui;
 
+import datos.BaseDatos;
 import enums.UnidadDeMedida;
-import java.awt.Color;
+import interfaces.CategoriaAddedListener;
+import interfaces.ProveedorAddedListener;
 import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Image;
-import javax.swing.BorderFactory;
+import java.io.File;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import logica.Categoria;
+import logica.Proveedor;
 
-public class ArticulosDialog extends javax.swing.JDialog {
+public class ProductosDialog extends javax.swing.JDialog {
 
     public static Frame FRAMEPADRE;
     ImageIcon iconAddImageNoFocus, iconAddImageFocus;
+    File imgArticleFile;
+    DefaultComboBoxModel<Categoria> modeloCategorias;
+    DefaultComboBoxModel<Proveedor> modeloProveedores;
+    BaseDatos baseDatos;
     
-    public ArticulosDialog(java.awt.Frame parent, boolean modal) {
+    public ProductosDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        baseDatos = new BaseDatos();        
+        modeloCategorias = new DefaultComboBoxModel<>();
+        modeloProveedores = new DefaultComboBoxModel<>();
         initComponents();
+        cargarModelos();
         cargarIconos();
     }
 
@@ -23,13 +39,15 @@ public class ArticulosDialog extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                ArticulosDialog dialog = new ArticulosDialog(new javax.swing.JFrame(), true);
+                ProductosDialog dialog = new ProductosDialog(new javax.swing.JFrame(), true);
                 /*dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
                         System.exit(0);
                     }
                 });*/
+                dialog.setAlwaysOnTop(true);
+                dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
             }
@@ -57,12 +75,12 @@ public class ArticulosDialog extends javax.swing.JDialog {
         jLabel7 = new javax.swing.JLabel();
         jTextField4 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        cmbCategoria = new javax.swing.JComboBox<>();
         jTextField5 = new javax.swing.JTextField();
         btnGestionarCategorias = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        cmbProveedor = new javax.swing.JComboBox<>();
         btnGestionarProveedores = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
 
@@ -76,6 +94,9 @@ public class ArticulosDialog extends javax.swing.JDialog {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 lblImagenArticuloMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                lblImagenArticuloMousePressed(evt);
             }
         });
 
@@ -101,8 +122,6 @@ public class ArticulosDialog extends javax.swing.JDialog {
 
         jLabel8.setText("Precio de Venta");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnGestionarCategorias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGestionarCategoriasActionPerformed(evt);
@@ -112,8 +131,6 @@ public class ArticulosDialog extends javax.swing.JDialog {
         jButton2.setText("Cancelar");
 
         jButton3.setText("Aceptar");
-
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnGestionarProveedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -165,14 +182,14 @@ public class ArticulosDialog extends javax.swing.JDialog {
                                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(cmbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(btnGestionarCategorias, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(btnGestionarProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -204,7 +221,7 @@ public class ArticulosDialog extends javax.swing.JDialog {
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel6)
@@ -220,7 +237,7 @@ public class ArticulosDialog extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jComboBox4, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(cmbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(12, 12, 12)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -236,9 +253,7 @@ public class ArticulosDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 24, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,40 +267,60 @@ public class ArticulosDialog extends javax.swing.JDialog {
         this.setAlwaysOnTop(false);
         CategoriasDialog modalCategorias = new CategoriasDialog(FRAMEPADRE, true);
         modalCategorias.setAlwaysOnTop(true);
-        modalCategorias.setDefaultCloseOperation(2);
+        modalCategorias.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         modalCategorias.setLocationRelativeTo(null);
         modalCategorias.setVisible(true);
-        this.dispose();
-
-//antes de actualizar el dialog actualizamos el arreglo que se pasara al DefaultComboBoxModel
-//Creamos una nueva instancia de ArticulosDialog       
-        createAndDisplayDialog();
-
+        modalCategorias.addCategoriaListener(new CategoriaAddedListener() {
+            @Override
+            public void CategoriaAdded() {
+                cargarModelos();
+            }
+        });
     }//GEN-LAST:event_btnGestionarCategoriasActionPerformed
 
     private void btnGestionarProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarProveedoresActionPerformed
         this.setAlwaysOnTop(false);
         ProveedoresDialog modalProveedores = new ProveedoresDialog(FRAMEPADRE, true);
         modalProveedores.setAlwaysOnTop(true);
-        modalProveedores.setDefaultCloseOperation(2);
+        modalProveedores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         modalProveedores.setLocationRelativeTo(null);
         modalProveedores.setVisible(true);
-        this.dispose();
-        createAndDisplayDialog();
+        modalProveedores.addProveedorListener(new ProveedorAddedListener() {
+            @Override
+            public void ProveedorAdded() {
+                cargarModelos();
+            }
+        });
     }//GEN-LAST:event_btnGestionarProveedoresActionPerformed
 
     private void lblImagenArticuloMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenArticuloMouseEntered
-       //lblImagenArticulo.setBorder(BorderFactory.createLineBorder(new Color(0, 102, 0)));
-        lblImagenArticulo.setIcon(new ImageIcon(iconAddImageFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
         lblImagenArticulo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        if (imgArticleFile == null) {
+            lblImagenArticulo.setIcon(new ImageIcon(iconAddImageFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+        }
     }//GEN-LAST:event_lblImagenArticuloMouseEntered
 
     private void lblImagenArticuloMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenArticuloMouseExited
-        //lblImagenArticulo.setBorder(null);
-        lblImagenArticulo.setIcon(new ImageIcon(iconAddImageNoFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
         lblImagenArticulo.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        if (imgArticleFile == null) {
+            lblImagenArticulo.setIcon(new ImageIcon(iconAddImageNoFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+        }
     }//GEN-LAST:event_lblImagenArticuloMouseExited
 
+    private void lblImagenArticuloMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenArticuloMousePressed
+        //Seleccionador de archivos (imagenes)
+        JFileChooser chooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de imagen jpg, gif o png", "jpg", "gif", "png");
+        chooser.setFileFilter(filter);
+
+        int returnVal = chooser.showOpenDialog(jPanel1);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            imgArticleFile = chooser.getSelectedFile();
+            ImageIcon selectedImage = new ImageIcon(imgArticleFile.getAbsolutePath());
+            lblImagenArticulo.setIcon(new ImageIcon(selectedImage.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+        }
+    }//GEN-LAST:event_lblImagenArticuloMousePressed
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -300,27 +335,26 @@ public class ArticulosDialog extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ArticulosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ArticulosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ArticulosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ArticulosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ProductosDialog.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         createAndDisplayDialog();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGestionarCategorias;
     private javax.swing.JButton btnGestionarProveedores;
+    private javax.swing.JComboBox<Categoria> cmbCategoria;
+    private javax.swing.JComboBox<Proveedor> cmbProveedor;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JComboBox<UnidadDeMedida> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -345,6 +379,17 @@ public class ArticulosDialog extends javax.swing.JDialog {
         iconAddImageNoFocus = new ImageIcon(getClass().getResource("/iconAddImageNoFocus.png"));
         iconAddImageFocus = new ImageIcon(getClass().getResource("/iconAddImageFocus.png"));
         lblImagenArticulo.setIcon(new ImageIcon(iconAddImageNoFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+    }
+
+    private void cargarModelos() {
+        modeloCategorias.addAll(baseDatos.obtenerCategoria());
+        modeloProveedores.addAll(baseDatos.obtenerProveedores());
+        //setear a los comboBox
+        cmbCategoria.setModel(modeloCategorias);
+        cmbCategoria.setSelectedIndex(0);
+        cmbProveedor.setModel(modeloProveedores);
+        cmbProveedor.setSelectedIndex(0);
+        
     }
 
 }

@@ -395,7 +395,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     private void btnArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnArticulosActionPerformed
-        ArticulosDialog modalArticulos = new ArticulosDialog(this, true);
+        ProductosDialog modalArticulos = new ProductosDialog(this, true);
         modalArticulos.setAlwaysOnTop(true);
         modalArticulos.setDefaultCloseOperation(2);
         modalArticulos.setLocationRelativeTo(null);
@@ -444,7 +444,7 @@ public class Principal extends javax.swing.JFrame {
             public void run() {
                 Principal principal = new Principal();
                 principal.setVisible(true);
-                ArticulosDialog.FRAMEPADRE = principal;
+                ProductosDialog.FRAMEPADRE = principal;
             }
         });
     }
