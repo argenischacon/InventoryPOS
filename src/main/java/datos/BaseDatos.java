@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import logica.Categoria;
 import logica.Producto;
 import logica.Proveedor;
@@ -48,8 +49,8 @@ public class BaseDatos {
             st.setDouble(7, producto.getPrecioCompraProducto());
             st.setDouble(8, producto.getPrecioVentaProducto());
             st.setDouble(9, producto.getExistenciasProducto());
-            st.setInt(10, producto.getCategoria().getIdCategoria());
-            st.setInt(11, producto.getProveedor().getIdProveedor());
+            st.setInt(10, producto.getCategoria());
+            st.setInt(11, producto.getProveedor());
 
             st.executeUpdate();
 
@@ -179,6 +180,119 @@ public class BaseDatos {
             }
         }
 
+    }
+
+    public ArrayList<Producto> obtenerProductos() {
+
+        ArrayList<Producto> productos = new ArrayList<>();
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "SELECT * FROM productos";
+
+            st = conn.prepareStatement(sql);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getString(1));
+                producto.setNombreProducto(rs.getString(2));
+                producto.setDescripcionProducto(rs.getString(3));
+                producto.setStock(rs.getDouble(4));
+                //falta foto
+                producto.setUnidadMedida(rs.getString(6));
+                producto.setPrecioCompraProducto(rs.getDouble(7));
+                producto.setPrecioVentaProducto(rs.getDouble(8));
+                producto.setExistenciasProducto(rs.getDouble(9));
+                producto.setCategoria(rs.getInt(10));
+                producto.setProveedor(rs.getInt(11));
+
+                productos.add(producto);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return productos;
+    }
+
+    public ArrayList<Categoria> obtenerCategoria() {
+
+        ArrayList<Categoria> categorias = new ArrayList<>();
+
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "SELECT * FROM categorias";
+
+            st = conn.prepareStatement(sql);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Categoria categoria = new Categoria();
+                categoria.setIdCategoria(rs.getInt(1));
+                categoria.setNombreCategoria(rs.getString(2));
+                categoria.setDescripcionCategoria(rs.getString(3));
+                categorias.add(categoria);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return categorias;
+    }
+
+    public ArrayList<Proveedor> obtenerProveedores() {
+
+        ArrayList<Proveedor> proveedores = new ArrayList<>();
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "SELECT * FROM productos";
+
+            st = conn.prepareStatement(sql);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Proveedor proveedor = new Proveedor();
+                proveedor.setIdProveedor(rs.getInt(1));
+                proveedor.setNombreProveedor(rs.getString(2));
+                proveedor.setDireccionProveedor(rs.getString(3));
+                proveedor.setTelefonoProveedor(rs.getString(4));
+                proveedor.setEmailProveedor(rs.getString(5));
+                proveedor.setContactoProveedor(rs.getString(6));
+                proveedores.add(proveedor);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return proveedores;
     }
 
 }

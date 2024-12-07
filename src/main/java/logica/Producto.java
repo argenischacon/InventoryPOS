@@ -14,13 +14,13 @@ public class Producto {
     private double precioVentaProducto;
     private double existenciasProducto;
     
-    private Categoria categoria;
-    private Proveedor proveedor;
+    private int categoria;
+    private int proveedor;
 
     public Producto() {
     }
 
-    public Producto(String idProducto, String nombreProducto, String descripcionProducto, double stock, File fotoProducto, String unidadMedida, double precioCompraProducto, double precioVentaProducto, double existenciasProducto, Categoria categoria, Proveedor proveedor) {
+    public Producto(String idProducto, String nombreProducto, String descripcionProducto, double stock, File fotoProducto, String unidadMedida, double precioCompraProducto, double precioVentaProducto, double existenciasProducto, int categoria, int proveedor) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.descripcionProducto = descripcionProducto;
@@ -106,21 +106,23 @@ public class Producto {
         this.existenciasProducto = existenciasProducto;
     }
 
-    public Categoria getCategoria() {
+    public int getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Categoria categoria) {
+    public void setCategoria(int categoria) {
         this.categoria = categoria;
     }
 
-    public Proveedor getProveedor() {
+    public int getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(Proveedor proveedor) {
+    public void setProveedor(int proveedor) {
         this.proveedor = proveedor;
     }
+
+
 
 
     
