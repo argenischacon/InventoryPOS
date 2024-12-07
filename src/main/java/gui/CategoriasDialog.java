@@ -1,16 +1,26 @@
-
 package gui;
 
+import interfaces.CategoriaAddedListener;
 
 public class CategoriasDialog extends javax.swing.JDialog {
 
+    private CategoriaAddedListener categoriaListener;  // Campo para almacenar el listener
 
     public CategoriasDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
-   
+    public void addCategoriaListener(CategoriaAddedListener listener) {
+        this.categoriaListener = listener;  // Guardamos el listener que se nos pasa
+    }
+
+    private void onCategoriaAdded() {
+        if (categoriaListener != null) {  // Solo notificamos si hay un listener registrado
+            categoriaListener.CategoriaAdded();  // Llamamos al método de notificación
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -101,9 +111,7 @@ public class CategoriasDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
