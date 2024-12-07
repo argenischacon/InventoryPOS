@@ -1,10 +1,12 @@
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\datos\BaseDatos.java
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\enums\UnidadDeMedida.java
-C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\gui\ArticulosDialog.java
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\gui\CategoriasDialog.java
-C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\gui\EditarArticulosDialog.java
+C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\gui\EditarProductosDialog.java
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\gui\Principal.java
+C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\gui\ProductosDialog.java
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\gui\ProveedoresDialog.java
+C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\interfaces\CategoriaAddedListener.java
+C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\interfaces\ProveedorAddedListener.java
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\logica\Categoria.java
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\logica\Producto.java
 C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\java\logica\Proveedor.java

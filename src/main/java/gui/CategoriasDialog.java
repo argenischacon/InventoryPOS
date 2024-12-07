@@ -1,13 +1,15 @@
 package gui;
 
+import datos.BaseDatos;
 import interfaces.CategoriaAddedListener;
 
 public class CategoriasDialog extends javax.swing.JDialog {
-
+    private BaseDatos base;
     private CategoriaAddedListener categoriaListener;  // Campo para almacenar el listener
 
     public CategoriasDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
+        base = new BaseDatos();
         initComponents();
     }
 
@@ -27,11 +29,11 @@ public class CategoriasDialog extends javax.swing.JDialog {
 
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        txtDescCategoria = new javax.swing.JTextArea();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtNombreCategoria = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtClaveCategoria = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -39,9 +41,9 @@ public class CategoriasDialog extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Categorias");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        txtDescCategoria.setColumns(20);
+        txtDescCategoria.setRows(5);
+        jScrollPane1.setViewportView(txtDescCategoria);
 
         jLabel6.setText("Descripcion de la categoría");
 
@@ -61,8 +63,8 @@ public class CategoriasDialog extends javax.swing.JDialog {
                 .addContainerGap(24, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jTextField2)
-                        .addComponent(jTextField1)
+                        .addComponent(txtNombreCategoria)
+                        .addComponent(txtClaveCategoria)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -81,11 +83,11 @@ public class CategoriasDialog extends javax.swing.JDialog {
                 .addGap(36, 36, 36)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtClaveCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtNombreCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel6)
                 .addGap(7, 7, 7)
@@ -160,8 +162,8 @@ public class CategoriasDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField txtClaveCategoria;
+    private javax.swing.JTextArea txtDescCategoria;
+    private javax.swing.JTextField txtNombreCategoria;
     // End of variables declaration//GEN-END:variables
 }

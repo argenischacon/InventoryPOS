@@ -266,31 +266,32 @@ public class ProductosDialog extends javax.swing.JDialog {
     private void btnGestionarCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarCategoriasActionPerformed
         this.setAlwaysOnTop(false);
         CategoriasDialog modalCategorias = new CategoriasDialog(FRAMEPADRE, true);
+        modalCategorias.addCategoriaListener(new CategoriaAddedListener() {
+            @Override
+            public void CategoriaAdded() {
+                System.out.println("CategoriaAdded");
+                cargarModelos();
+            }
+        });
         modalCategorias.setAlwaysOnTop(true);
         modalCategorias.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         modalCategorias.setLocationRelativeTo(null);
         modalCategorias.setVisible(true);
-        modalCategorias.addCategoriaListener(new CategoriaAddedListener() {
-            @Override
-            public void CategoriaAdded() {
-                cargarModelos();
-            }
-        });
     }//GEN-LAST:event_btnGestionarCategoriasActionPerformed
 
     private void btnGestionarProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarProveedoresActionPerformed
         this.setAlwaysOnTop(false);
         ProveedoresDialog modalProveedores = new ProveedoresDialog(FRAMEPADRE, true);
-        modalProveedores.setAlwaysOnTop(true);
-        modalProveedores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        modalProveedores.setLocationRelativeTo(null);
-        modalProveedores.setVisible(true);
         modalProveedores.addProveedorListener(new ProveedorAddedListener() {
             @Override
             public void ProveedorAdded() {
                 cargarModelos();
             }
         });
+        modalProveedores.setAlwaysOnTop(true);
+        modalProveedores.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        modalProveedores.setLocationRelativeTo(null);
+        modalProveedores.setVisible(true);
     }//GEN-LAST:event_btnGestionarProveedoresActionPerformed
 
     private void lblImagenArticuloMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenArticuloMouseEntered
@@ -382,7 +383,9 @@ public class ProductosDialog extends javax.swing.JDialog {
     }
 
     private void cargarModelos() {
+        modeloCategorias.removeAllElements();
         modeloCategorias.addAll(baseDatos.obtenerCategoria());
+        modeloProveedores.removeAllElements();
         modeloProveedores.addAll(baseDatos.obtenerProveedores());
         //setear a los comboBox
         cmbCategoria.setModel(modeloCategorias);
