@@ -403,7 +403,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnArticulosActionPerformed
 
     private void btnEditarArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarArticuloActionPerformed
-        EditarArticulosDialog modalEditarArticulos = new EditarArticulosDialog(this, true);
+        EditarProductosDialog modalEditarArticulos = new EditarProductosDialog(this, true);
         modalEditarArticulos.setLocationRelativeTo(null);
         modalEditarArticulos.setDefaultCloseOperation(2);
         modalEditarArticulos.setAlwaysOnTop(true);
