@@ -7,11 +7,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import logica.Categoria;
 import logica.Producto;
 import logica.Proveedor;
+import logica.Venta;
+import logica.VentaProductos;
 
 public class BaseDatos {
 
@@ -72,18 +72,18 @@ public class BaseDatos {
 
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
-            
+
             String sql = "INSERT INTO categorias (nom_categoria_prod, desc_categoria_prod)"
                     + "VALUES (?,?)";
             st = conn.prepareStatement(sql);
             st.setString(1, categoria.getNombreCategoria());
-            st.setString(2, categoria.getDescripcionCategoria());          
-            
+            st.setString(2, categoria.getDescripcionCategoria());
+
             st.executeUpdate();
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }finally{
+        } finally {
             try {
                 st.close();
                 conn.close();
@@ -93,29 +93,29 @@ public class BaseDatos {
         }
 
     }
-    
-    public void insertarProveedor(Proveedor proveedor){
-        
+
+    public void insertarProveedor(Proveedor proveedor) {
+
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
-            
+
             String sql = "INSERT INTO proveedores (nom_proveedor, dir_proveedor, "
                     + "telefono_proveedor, email_proveedor, contacto_proveedor)"
                     + "VALUES (?,?,?,?,?)";
-            
+
             st = conn.prepareStatement(sql);
-            
+
             st.setString(1, proveedor.getNombreProveedor());
             st.setString(2, proveedor.getDireccionProveedor());
             st.setString(3, proveedor.getTelefonoProveedor());
             st.setString(4, proveedor.getEmailProveedor());
             st.setString(5, proveedor.getContactoProveedor());
-            
-            st.executeUpdate();          
-            
+
+            st.executeUpdate();
+
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }finally{
+        } finally {
             try {
                 conn.close();
                 st.close();
@@ -123,9 +123,62 @@ public class BaseDatos {
                 ex.printStackTrace();
             }
         }
-   
+
     }
-    
-    
+
+    public void insertarVenta(Venta venta) {
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "INSERT INTO ventas (monto_venta, fecha_venta) "
+                    + "VALUES (?,?)";
+
+            st = conn.prepareStatement(sql);
+
+            st.setDouble(1, venta.getMontoVenta());
+            st.setDate(2, venta.getFechaVenta());
+
+            st.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void insertarVentaProductos(VentaProductos ventaProductos) {
+
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "INSERT INTO venta_productos (id_venta, id_prod, cantidad_vendida) "
+                    + "VALUES (?,?,?)";
+
+            st = conn.prepareStatement(sql);
+
+            st.setInt(1, ventaProductos.getVenta());
+            st.setString(2, ventaProductos.getProducto());
+            st.setDouble(3, ventaProductos.getCantidadVendida());
+
+            st.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+    }
 
 }
