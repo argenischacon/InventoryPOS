@@ -40,7 +40,12 @@ public class Categoria {
         this.descripcionCategoria = descripcionCategoria;
     }
 
+    @Override
+    public String toString() {
+        return nombreCategoria;
+    }
 
+    
    
    
 }

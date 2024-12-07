@@ -69,6 +69,11 @@ public class Proveedor {
     public void setContactoProveedor(String contactoProveedor) {
         this.contactoProveedor = contactoProveedor;
     }
+
+    @Override
+    public String toString() {
+        return nombreProveedor;
+    }
     
     
 }
