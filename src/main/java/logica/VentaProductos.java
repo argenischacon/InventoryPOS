@@ -3,33 +3,33 @@ package logica;
 
 
 public class VentaProductos {
-   private Venta venta;
-   private Producto producto;
+   private int venta;
+   private String producto;
    private double cantidadVendida;
 
     public VentaProductos() {
     }
 
-    public VentaProductos(Venta id_venta, Producto idProducto, double cantidadVendida) {
-        this.venta = id_venta;
-        this.producto = idProducto;
+    public VentaProductos(int venta, String producto, double cantidadVendida) {
+        this.venta = venta;
+        this.producto = producto;
         this.cantidadVendida = cantidadVendida;
     }
 
-    public Venta getId_venta() {
+    public int getVenta() {
         return venta;
     }
 
-    public void setId_venta(Venta id_venta) {
-        this.venta = id_venta;
+    public void setVenta(int venta) {
+        this.venta = venta;
     }
 
-    public Producto getIdProducto() {
+    public String getProducto() {
         return producto;
     }
 
-    public void setIdProducto(Producto idProducto) {
-        this.producto = idProducto;
+    public void setProducto(String producto) {
+        this.producto = producto;
     }
 
     public double getCantidadVendida() {
@@ -39,7 +39,5 @@ public class VentaProductos {
     public void setCantidadVendida(double cantidadVendida) {
         this.cantidadVendida = cantidadVendida;
     }
-   
-   
-   
+
 }
