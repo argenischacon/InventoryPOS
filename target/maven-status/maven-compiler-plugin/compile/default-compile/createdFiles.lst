@@ -4,12 +4,12 @@ gui\Principal$4.class
 gui\Principal$6.class
 gui\ProductosDialog$7.class
 gui\ProductosDialog$4.class
-gui\ProveedoresDialog$1$1.class
 gui\EditarProductosDialog$1$1.class
 gui\Principal$1.class
 gui\ProductosDialog$5.class
 interfaces\ProveedorAddedListener.class
 gui\CategoriasDialog$2.class
+gui\ProveedoresDialog$2.class
 gui\ProductosDialog.class
 gui\Principal$3.class
 logica\Proveedor.class
@@ -29,6 +29,7 @@ gui\EditarProductosDialog$1.class
 gui\Principal$2.class
 gui\CategoriasDialog.class
 gui\ProductosDialog$1.class
+gui\ProveedoresDialog$2$1.class
 gui\ProductosDialog$6.class
 enums\UnidadDeMedida.class
 gui\Principal$7.class
