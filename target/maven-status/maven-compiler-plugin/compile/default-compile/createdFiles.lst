@@ -2,13 +2,14 @@ gui\ProductosDialog$2.class
 interfaces\CategoriaAddedListener.class
 gui\Principal$4.class
 gui\Principal$6.class
+gui\ProductosDialog$7.class
 gui\ProductosDialog$4.class
 gui\ProveedoresDialog$1$1.class
 gui\EditarProductosDialog$1$1.class
 gui\Principal$1.class
+gui\CategoriasDialog$1$1.class
 gui\ProductosDialog$5.class
 interfaces\ProveedorAddedListener.class
-gui\CategoriasDialog$2.class
 gui\ProductosDialog.class
 gui\Principal$3.class
 logica\Proveedor.class
@@ -20,7 +21,6 @@ logica\Categoria.class
 datos\BaseDatos.class
 gui\EditarProductosDialog.class
 gui\ProductosDialog$3.class
-gui\CategoriasDialog$2$1.class
 gui\ProveedoresDialog.class
 logica\Producto.class
 gui\CategoriasDialog$1.class

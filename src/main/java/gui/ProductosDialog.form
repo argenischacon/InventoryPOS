@@ -49,8 +49,8 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jLabel2" alignment="0" min="-2" pref="81" max="-2" attributes="0"/>
                                   <Component id="jLabel5" alignment="0" min="-2" pref="60" max="-2" attributes="0"/>
-                                  <Component id="jTextField1" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="jTextField3" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtClave" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtNombre" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jScrollPane1" alignment="0" pref="317" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jLabel1" alignment="0" min="-2" pref="37" max="-2" attributes="0"/>
@@ -61,21 +61,21 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="jLabel7" min="-2" pref="99" max="-2" attributes="0"/>
                                       <Group type="102" attributes="0">
-                                          <Component id="jTextField4" min="-2" pref="150" max="-2" attributes="0"/>
+                                          <Component id="txtPrecioCompra" min="-2" pref="150" max="-2" attributes="0"/>
                                           <EmptySpace max="-2" attributes="0"/>
-                                          <Component id="jTextField5" min="-2" pref="151" max="-2" attributes="0"/>
+                                          <Component id="txtPrecioVenta" min="-2" pref="151" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jTextField2" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <Component id="txtStockRequerido" min="-2" pref="150" max="-2" attributes="0"/>
                                       <Component id="jLabel3" min="-2" pref="99" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="jComboBox2" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <Component id="cmbUnidadMedida" min="-2" pref="150" max="-2" attributes="0"/>
                                       <Component id="jLabel6" min="-2" pref="99" max="-2" attributes="0"/>
                                       <Component id="jLabel8" alignment="0" min="-2" pref="99" max="-2" attributes="0"/>
                                   </Group>
@@ -103,9 +103,9 @@
               </Group>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="jButton3" min="-2" pref="213" max="-2" attributes="0"/>
+                  <Component id="btnGuardar" min="-2" pref="213" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
-                  <Component id="jButton2" min="-2" pref="213" max="-2" attributes="0"/>
+                  <Component id="btnCancelar" min="-2" pref="213" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="162" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -121,7 +121,7 @@
                           <EmptySpace min="-2" pref="58" max="-2" attributes="0"/>
                           <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jTextField3" min="-2" pref="30" max="-2" attributes="0"/>
+                          <Component id="txtNombre" min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -134,10 +134,10 @@
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="btnGestionarCategorias" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jTextField2" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                          <Component id="jComboBox2" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                          <Component id="txtStockRequerido" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                          <Component id="cmbUnidadMedida" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                           <Component id="cmbCategoria" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                          <Component id="jTextField1" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                          <Component id="txtClave" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -156,8 +156,8 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="btnGestionarProveedores" alignment="0" min="-2" pref="30" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jTextField4" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
-                                  <Component id="jTextField5" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="txtPrecioCompra" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                                  <Component id="txtPrecioVenta" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                                   <Component id="cmbProveedor" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                               </Group>
                           </Group>
@@ -169,8 +169,8 @@
                   <Component id="jScrollPane1" min="-2" pref="143" max="-2" attributes="0"/>
                   <EmptySpace pref="37" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jButton3" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
-                      <Component id="jButton2" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
+                      <Component id="btnGuardar" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
+                      <Component id="btnCancelar" alignment="3" min="-2" pref="52" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
               </Group>
@@ -188,7 +188,7 @@
             <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblImagenArticuloMousePressed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField1">
+        <Component class="javax.swing.JTextField" name="txtClave">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -207,7 +207,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="jTextArea1">
+            <Component class="javax.swing.JTextArea" name="txtDescripcion">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
@@ -215,7 +215,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JTextField" name="jTextField2">
+        <Component class="javax.swing.JTextField" name="txtStockRequerido">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
@@ -227,14 +227,14 @@
             <Property name="text" type="java.lang.String" value="Categoria"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField3">
+        <Component class="javax.swing.JTextField" name="txtNombre">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nombre"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="jComboBox2">
+        <Component class="javax.swing.JComboBox" name="cmbUnidadMedida">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
               <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(UnidadDeMedida.values())" type="code"/>
@@ -254,7 +254,7 @@
             <Property name="text" type="java.lang.String" value="Precio de compra"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField4">
+        <Component class="javax.swing.JTextField" name="txtPrecioCompra">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
@@ -271,22 +271,25 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;Categoria&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JTextField" name="jTextField5">
+        <Component class="javax.swing.JTextField" name="txtPrecioVenta">
         </Component>
         <Component class="javax.swing.JButton" name="btnGestionarCategorias">
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGestionarCategoriasActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton2">
+        <Component class="javax.swing.JButton" name="btnCancelar">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="btnGuardar">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Aceptar"/>
+            <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JComboBox" name="cmbProveedor">
           <Properties>

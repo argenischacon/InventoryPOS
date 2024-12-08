@@ -36,9 +36,9 @@ public class BaseDatos {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
             FileInputStream fis = new FileInputStream(producto.getFotoProducto());
 
-            st = conn.prepareStatement("INSERT INTO productos (id_prod, nom_prod, desc_prod, stock_prod"
-                    + "foto_prod, unidad_prod, precio_compra_prod, precio_venta_prod, existencias_prod"
-                    + "id_categoria_prod, id_proveedor) VALUES(?,?,?,?,?,?,?,?,?,?,?)");
+            st = conn.prepareStatement("INSERT INTO productos (id_prod, nom_prod, desc_prod, stock_prod, "
+                    + "foto_prod, unidad_prod, precio_compra_prod, precio_venta_prod, existencias_prod, "
+                    + "id_categoria_prod, id_proveedor) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
             st.setString(1, producto.getIdProducto());
             st.setString(2, producto.getNombreProducto());
@@ -265,7 +265,7 @@ public class BaseDatos {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
 
-            String sql = "SELECT * FROM productos";
+            String sql = "SELECT * FROM proveedores";
 
             st = conn.prepareStatement(sql);
 
