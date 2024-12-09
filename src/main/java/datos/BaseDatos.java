@@ -188,7 +188,7 @@ public class BaseDatos {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
 
-            String sql = "SELECT * FROM productos";
+            String sql = "SELECT * FROM productos ORDER BY id_prod ASC";
 
             st = conn.prepareStatement(sql);
 
@@ -210,7 +210,6 @@ public class BaseDatos {
 
                 productos.add(producto);
             }
-
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
@@ -293,6 +292,132 @@ public class BaseDatos {
             }
         }
         return proveedores;
+    }
+
+    public Producto obtenerProducto(String selectedId) {
+        Producto producto = new Producto();
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            String sql = "SELECT * FROM productos WHERE id_prod = ?";
+
+            st = conn.prepareStatement(sql);
+            st.setString(1, selectedId);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                producto.setIdProducto(rs.getString(1));
+                producto.setNombreProducto(rs.getString(2));
+                producto.setDescripcionProducto(rs.getString(3));
+                producto.setStock(rs.getDouble(4));
+                //falta foto
+                producto.setUnidadMedida(rs.getString(6));
+                producto.setPrecioCompraProducto(rs.getDouble(7));
+                producto.setPrecioVentaProducto(rs.getDouble(8));
+                producto.setExistenciasProducto(rs.getDouble(9));
+                producto.setCategoria(rs.getInt(10));
+                producto.setProveedor(rs.getInt(11));
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                conn.close();
+                st.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return producto;
+    }
+
+    public void actualizarInventario(String selectedId, double nuevaCantidad) {
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "UPDATE productos SET existencias_prod = ? WHERE id_prod = ?";
+            st = conn.prepareStatement(sql);
+            st.setDouble(1, nuevaCantidad);
+            st.setString(2, selectedId);
+
+            st.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public ArrayList<Producto> obtenerProductosPorCriterio(String criterio) {
+        ArrayList<Producto> productos = new ArrayList<>();
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "SELECT * FROM productos WHERE id_prod ILIKE '%" + criterio + "%'"
+                    + " OR nom_prod ILIKE '%" + criterio + "%' ORDER BY id_prod ASC";
+
+            st = conn.prepareStatement(sql);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getString(1));
+                producto.setNombreProducto(rs.getString(2));
+                producto.setDescripcionProducto(rs.getString(3));
+                producto.setStock(rs.getDouble(4));
+                //falta foto
+                producto.setUnidadMedida(rs.getString(6));
+                producto.setPrecioCompraProducto(rs.getDouble(7));
+                producto.setPrecioVentaProducto(rs.getDouble(8));
+                producto.setExistenciasProducto(rs.getDouble(9));
+                producto.setCategoria(rs.getInt(10));
+                producto.setProveedor(rs.getInt(11));
+
+                productos.add(producto);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return productos;
+    }
+
+    public void eliminarProducto(String selectedId) {
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "DELETE FROM productos WHERE id_prod = '"+selectedId+"'";
+            st = conn.prepareStatement(sql);
+
+            st.executeUpdate();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
     }
 
 }

@@ -8,6 +8,7 @@ import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -318,15 +319,33 @@ public class ProductosDialog extends javax.swing.JDialog {
 
     private void lblImagenArticuloMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenArticuloMouseEntered
         lblImagenArticulo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        if (imgArticleFile == null) {
-            lblImagenArticulo.setIcon(new ImageIcon(iconAddImageFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+        try {
+            File file = new File(getClass().getResource("/sinImagen.png").toURI());
+            String path = file.getCanonicalPath();
+            if (imgArticleFile.getCanonicalPath().equals(path)) {
+                lblImagenArticulo.setIcon(new ImageIcon(iconAddImageFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+            }
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }//GEN-LAST:event_lblImagenArticuloMouseEntered
 
     private void lblImagenArticuloMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenArticuloMouseExited
         lblImagenArticulo.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        if (imgArticleFile == null) {
-            lblImagenArticulo.setIcon(new ImageIcon(iconAddImageNoFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+
+        try {
+            File file = new File(getClass().getResource("/sinImagen.png").toURI());
+            String path = file.getCanonicalPath();
+            if (imgArticleFile.getCanonicalPath().equals(path)) {
+                lblImagenArticulo.setIcon(new ImageIcon(iconAddImageNoFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
+            }
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_lblImagenArticuloMouseExited
 
@@ -364,10 +383,10 @@ public class ProductosDialog extends javax.swing.JDialog {
                         precioVentaProducto, existenciasproducto, idCategoria, idProveedor);
 
                 baseDatos.insertarProducto(producto);
-                
+
                 JOptionPane.showMessageDialog(this, "Guardado exitoso", "", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Los datos introducidos no son validos", "Error en tipos de datos", JOptionPane.ERROR_MESSAGE);
             }
@@ -378,14 +397,14 @@ public class ProductosDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        if(isCamposRellenos()){//si hay al menos un campo vacio camposVacios   =  true;
+        if (isCamposRellenos()) {//si hay al menos un campo vacio camposVacios   =  true;
             int opcion = JOptionPane.showOptionDialog(this, "¿Realmente desea cancelar?"
                     + "\nSe perderan los datos", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
                     null, new Object[]{"Si", "No"}, "Si");
-            if(opcion == JOptionPane.YES_OPTION){
+            if (opcion == JOptionPane.YES_OPTION) {
                 this.dispose();
             }
-        }else{
+        } else {
             this.dispose();
         }
     }//GEN-LAST:event_btnCancelarActionPerformed
@@ -477,15 +496,15 @@ public class ProductosDialog extends javax.swing.JDialog {
     }
 
     private boolean isCamposRellenos() {
-        if(txtClave.getText().length() > 0 || txtNombre.getText().length() > 0
+        if (txtClave.getText().length() > 0 || txtNombre.getText().length() > 0
                 || txtDescripcion.getText().length() > 0 || txtStockRequerido.getText().length() > 0
                 || (cmbUnidadMedida.getSelectedIndex() != -1) || txtPrecioCompra.getText().length() > 0
                 || txtPrecioVenta.getText().length() > 0 || (cmbCategoria.getSelectedIndex() != -1)
-                || (cmbProveedor.getSelectedIndex() != -1)){
-            
+                || (cmbProveedor.getSelectedIndex() != -1)) {
+
             return true;//hay al menos un campo relleno
-            
-        }else{
+
+        } else {
             return false;//todos los campos estan vacios
         }
     }
