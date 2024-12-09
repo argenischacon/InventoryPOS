@@ -125,6 +125,7 @@ public class ProductosDialog extends javax.swing.JDialog {
         jLabel5.setText("Nombre");
 
         cmbUnidadMedida.setModel(new javax.swing.DefaultComboBoxModel<>(UnidadDeMedida.values()));
+        cmbUnidadMedida.setSelectedIndex(-1);
 
         jLabel6.setText("Unidad de medida");
 
@@ -377,9 +378,10 @@ public class ProductosDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        if(!isCamposVacios()){//si hay al menos un campo vacio camposVacios   =  true;
-            int opcion = JOptionPane.showConfirmDialog(this, "¿Realmente desea cancelar?"
-                    + "\nSe perderan los datos", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if(isCamposRellenos()){//si hay al menos un campo vacio camposVacios   =  true;
+            int opcion = JOptionPane.showOptionDialog(this, "¿Realmente desea cancelar?"
+                    + "\nSe perderan los datos", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+                    null, new Object[]{"Si", "No"}, "Si");
             if(opcion == JOptionPane.YES_OPTION){
                 this.dispose();
             }
@@ -467,11 +469,27 @@ public class ProductosDialog extends javax.swing.JDialog {
                 || txtStockRequerido.getText().isEmpty() || (cmbUnidadMedida.getSelectedIndex() == -1)
                 || txtPrecioCompra.getText().isEmpty() || txtPrecioVenta.getText().isEmpty()
                 || (cmbCategoria.getSelectedIndex() == -1) || (cmbProveedor.getSelectedIndex() == -1)) {
-            return true;
+            return true;//si al menos un campo es vacio
         } else {
-            return false;
+            return false;//todos los campos estan rellenos
         }
 
+    }
+
+    private boolean isCamposRellenos() {
+        if(txtClave.getText().length() > 0 || txtNombre.getText().length() > 0
+                || txtDescripcion.getText().length() > 0 || txtStockRequerido.getText().length() > 0
+                || (cmbUnidadMedida.getSelectedIndex() != -1) || txtPrecioCompra.getText().length() > 0
+                || txtPrecioVenta.getText().length() > 0 || (cmbCategoria.getSelectedIndex() != -1)
+                || (cmbProveedor.getSelectedIndex() != -1)){
+            
+            System.out.println("true");
+            return true;//hay al menos un campo relleno
+            
+        }else{
+            System.out.println("false");
+            return false;//todos los campos estan vacios
+        }
     }
 
 }
