@@ -483,11 +483,9 @@ public class ProductosDialog extends javax.swing.JDialog {
                 || txtPrecioVenta.getText().length() > 0 || (cmbCategoria.getSelectedIndex() != -1)
                 || (cmbProveedor.getSelectedIndex() != -1)){
             
-            System.out.println("true");
             return true;//hay al menos un campo relleno
             
         }else{
-            System.out.println("false");
             return false;//todos los campos estan vacios
         }
     }

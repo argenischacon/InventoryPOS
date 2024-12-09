@@ -58,6 +58,11 @@ public class CategoriasDialog extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -125,7 +130,7 @@ public class CategoriasDialog extends javax.swing.JDialog {
                 onCategoriaAdded(categoria);
                 this.dispose();
                 JOptionPane.showMessageDialog(this, "Guardado exitoso", "Categoria", JOptionPane.INFORMATION_MESSAGE);
-                
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Los datos introducidos no son validos", "Error en tipos de datos", JOptionPane.ERROR_MESSAGE);
             }
@@ -133,6 +138,19 @@ public class CategoriasDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "No pueden haber campos vacios", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        if (isCamposRellenos()) {//si hay al menos un campo vacio camposVacios   =  true;
+            int opcion = JOptionPane.showOptionDialog(this, "¿Realmente desea cancelar?"
+                    + "\nSe perderan los datos", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+                    null, new Object[]{"Si", "No"}, "Si");
+            if (opcion == JOptionPane.YES_OPTION) {
+                this.dispose();
+            }
+        } else {
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -186,10 +204,20 @@ public class CategoriasDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private boolean isCamposVacios() {
-        if (txtNombreCategoria.getText().isEmpty()|| txtDescCategoria.getText().isEmpty()) {
+        if (txtNombreCategoria.getText().isEmpty() || txtDescCategoria.getText().isEmpty()) {
             return true;
         } else {
             return false;
+        }
+    }
+
+    private boolean isCamposRellenos() {
+        if (txtNombreCategoria.getText().length() > 0 || txtDescCategoria.getText().length() > 0) {
+
+            return true;//hay al menos un campo relleno
+
+        } else {
+            return false;//todos los campos estan vacios
         }
     }
 }
