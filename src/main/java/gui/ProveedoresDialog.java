@@ -142,7 +142,7 @@ public class ProveedoresDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (!camposVacios()) {
+        if (!isCamposVacios()) {
             try {
                 String nombreProveedor = txtNombreProveedor.getText();
                 String direccionProveedor = txtDireccionProveedor.getText();
@@ -223,7 +223,7 @@ public class ProveedoresDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtTelefonoProveedor;
     // End of variables declaration//GEN-END:variables
 
-    private boolean camposVacios() {
+    private boolean isCamposVacios() {
         if(txtNombreProveedor.getText().isEmpty() || txtDireccionProveedor.getText().isEmpty()
                 || txtEmailProveedor.getText().isEmpty() || txtTelefonoProveedor.getText().isEmpty()
                 || txtNombreContacto.getText().isEmpty()){

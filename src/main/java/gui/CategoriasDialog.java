@@ -113,7 +113,7 @@ public class CategoriasDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (!camposVacios()) {
+        if (!isCamposVacios()) {
 
             try {
                 String nombreCategoria = txtNombreCategoria.getText();
@@ -185,7 +185,7 @@ public class CategoriasDialog extends javax.swing.JDialog {
     private javax.swing.JTextField txtNombreCategoria;
     // End of variables declaration//GEN-END:variables
 
-    private boolean camposVacios() {
+    private boolean isCamposVacios() {
         if (txtNombreCategoria.getText().isEmpty()|| txtDescCategoria.getText().isEmpty()) {
             return true;
         } else {

@@ -139,6 +139,11 @@ public class ProductosDialog extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -340,7 +345,7 @@ public class ProductosDialog extends javax.swing.JDialog {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
 
-        if (!camposvacios()) {
+        if (!isCamposVacios()) {
             try {
                 String idProducto = txtClave.getText();
                 String nombreProducto = txtNombre.getText();
@@ -370,6 +375,18 @@ public class ProductosDialog extends javax.swing.JDialog {
 
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        if(!isCamposVacios()){//si hay al menos un campo vacio camposVacios   =  true;
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Realmente desea cancelar?"
+                    + "\nSe perderan los datos", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(opcion == JOptionPane.YES_OPTION){
+                this.dispose();
+            }
+        }else{
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -444,7 +461,7 @@ public class ProductosDialog extends javax.swing.JDialog {
 
     }
 
-    private boolean camposvacios() {
+    private boolean isCamposVacios() {
 
         if (txtClave.getText().isEmpty() || txtNombre.getText().isEmpty() || txtDescripcion.getText().isEmpty()
                 || txtStockRequerido.getText().isEmpty() || (cmbUnidadMedida.getSelectedIndex() == -1)

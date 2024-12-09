@@ -23,6 +23,7 @@ gui\EditarProductosDialog.class
 gui\ProductosDialog$3.class
 gui\CategoriasDialog$2$1.class
 gui\ProveedoresDialog.class
+gui\ProductosDialog$8.class
 logica\Producto.class
 gui\CategoriasDialog$1.class
 gui\EditarProductosDialog$1.class
