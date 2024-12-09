@@ -20,9 +20,9 @@ public class CategoriasDialog extends javax.swing.JDialog {
         this.categoriaListener = listener;  // Guardamos el listener que se nos pasa
     }
 
-    private void onCategoriaAdded() {
+    private void onCategoriaAdded(Categoria categoriaAdded) {
         if (categoriaListener != null) {  // Solo notificamos si hay un listener registrado
-            categoriaListener.CategoriaAdded();  // Llamamos al método de notificación
+            categoriaListener.CategoriaAdded(categoriaAdded);  // Llamamos al método de notificación
         }
     }
 
@@ -122,7 +122,7 @@ public class CategoriasDialog extends javax.swing.JDialog {
                 Categoria categoria = new Categoria(0, nombreCategoria, descCategoria);
 
                 base.insertarCategoriaProducto(categoria);
-                onCategoriaAdded();
+                onCategoriaAdded(categoria);
                 this.dispose();
                 JOptionPane.showMessageDialog(this, "Guardado exitoso", "Categoria", JOptionPane.INFORMATION_MESSAGE);
                 

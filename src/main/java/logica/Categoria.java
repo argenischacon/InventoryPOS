@@ -1,6 +1,8 @@
 
 package logica;
 
+import java.util.Objects;
+
 
 public class Categoria {
    private int idCategoria;
@@ -45,7 +47,26 @@ public class Categoria {
         return nombreCategoria;
     }
 
-    
-   
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.nombreCategoria);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Categoria other = (Categoria) obj;
+        return Objects.equals(this.nombreCategoria, other.nombreCategoria);
+    }
    
 }

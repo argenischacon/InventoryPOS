@@ -1,6 +1,8 @@
 
 package logica;
 
+import java.util.Objects;
+
 
 public class Proveedor {
     private int idProveedor;
@@ -73,6 +75,28 @@ public class Proveedor {
     @Override
     public String toString() {
         return nombreProveedor;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 61 * hash + Objects.hashCode(this.nombreProveedor);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Proveedor other = (Proveedor) obj;
+        return Objects.equals(this.nombreProveedor, other.nombreProveedor);
     }
     
     

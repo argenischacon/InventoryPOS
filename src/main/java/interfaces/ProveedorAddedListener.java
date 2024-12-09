@@ -1,6 +1,8 @@
 
 package interfaces;
 
+import logica.Proveedor;
+
 public interface ProveedorAddedListener {
-    void ProveedorAdded(); // Método que se debe implementar para manejar la notificación
+    void ProveedorAdded(Proveedor proveedorAdded); // Método que se debe implementar para manejar la notificación
 }

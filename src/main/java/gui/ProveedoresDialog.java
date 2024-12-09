@@ -20,9 +20,9 @@ public class ProveedoresDialog extends javax.swing.JDialog {
         this.proveedorAddedListener = listener;  // Guardamos el listener que se nos pasa
     }
 
-    private void onProveedorAdded() {
+    private void onProveedorAdded(Proveedor proveedorAdded) {
         if (proveedorAddedListener != null) {  // Solo notificamos si hay un listener registrado
-            proveedorAddedListener.ProveedorAdded();  // Llamamos al método de notificación
+            proveedorAddedListener.ProveedorAdded(proveedorAdded);  // Llamamos al método de notificación
         }
     }
 
@@ -152,7 +152,7 @@ public class ProveedoresDialog extends javax.swing.JDialog {
 
                 Proveedor proveedor = new Proveedor(0, nombreProveedor, direccionProveedor, telefonoProveedor, emailProveedor, contactoProveedor);
                 base.insertarProveedor(proveedor);
-                onProveedorAdded();
+                onProveedorAdded(proveedor);
                 this.dispose();
                 JOptionPane.showMessageDialog(this, "Guardado exitoso", "Proveedor", JOptionPane.INFORMATION_MESSAGE);
 

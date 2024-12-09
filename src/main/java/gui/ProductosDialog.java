@@ -283,9 +283,9 @@ public class ProductosDialog extends javax.swing.JDialog {
         CategoriasDialog modalCategorias = new CategoriasDialog(FRAMEPADRE, true);
         modalCategorias.addCategoriaListener(new CategoriaAddedListener() {
             @Override
-            public void CategoriaAdded() {
-                System.out.println("CategoriaAdded");
+            public void CategoriaAdded(Categoria categoriaAdded) {
                 cargarModelos();
+                cmbCategoria.setSelectedItem(categoriaAdded);
             }
         });
         modalCategorias.setAlwaysOnTop(true);
@@ -299,8 +299,9 @@ public class ProductosDialog extends javax.swing.JDialog {
         ProveedoresDialog modalProveedores = new ProveedoresDialog(FRAMEPADRE, true);
         modalProveedores.addProveedorListener(new ProveedorAddedListener() {
             @Override
-            public void ProveedorAdded() {
+            public void ProveedorAdded(Proveedor proveedorAdded) {
                 cargarModelos();
+                cmbProveedor.setSelectedItem(proveedorAdded);
             }
         });
         modalProveedores.setAlwaysOnTop(true);
@@ -437,9 +438,9 @@ public class ProductosDialog extends javax.swing.JDialog {
         modeloProveedores.addAll(baseDatos.obtenerProveedores());
         //setear a los comboBox
         cmbCategoria.setModel(modeloCategorias);
-        cmbCategoria.setSelectedIndex(0);
+        //cmbCategoria.setSelectedIndex(0);
         cmbProveedor.setModel(modeloProveedores);
-        cmbProveedor.setSelectedIndex(0);
+        //cmbProveedor.setSelectedIndex(0);
 
     }
 
