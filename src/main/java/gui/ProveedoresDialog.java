@@ -10,6 +10,7 @@ public class ProveedoresDialog extends javax.swing.JDialog {
 
     ProveedorAddedListener proveedorAddedListener;
     BaseDatos base;
+
     public ProveedoresDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         base = new BaseDatos();
@@ -57,6 +58,11 @@ public class ProveedoresDialog extends javax.swing.JDialog {
         jLabel5.setText("Nombre del contacto");
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -164,6 +170,19 @@ public class ProveedoresDialog extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        if (isCamposRellenos()) {//si hay al menos un campo vacio camposVacios   =  true;
+            int opcion = JOptionPane.showOptionDialog(this, "¿Realmente desea cancelar?"
+                    + "\nSe perderan los datos", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
+                    null, new Object[]{"Si", "No"}, "Si");
+            if (opcion == JOptionPane.YES_OPTION) {
+                this.dispose();
+            }
+        } else {
+            this.dispose();
+        }
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -224,12 +243,24 @@ public class ProveedoresDialog extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private boolean isCamposVacios() {
-        if(txtNombreProveedor.getText().isEmpty() || txtDireccionProveedor.getText().isEmpty()
+        if (txtNombreProveedor.getText().isEmpty() || txtDireccionProveedor.getText().isEmpty()
                 || txtEmailProveedor.getText().isEmpty() || txtTelefonoProveedor.getText().isEmpty()
-                || txtNombreContacto.getText().isEmpty()){
+                || txtNombreContacto.getText().isEmpty()) {
             return true;
-        }else{
+        } else {
             return false;
+        }
+    }
+
+    private boolean isCamposRellenos() {
+        if (txtNombreProveedor.getText().length() > 0 || txtDireccionProveedor.getText().length() > 0
+                || txtEmailProveedor.getText().length() > 0 || txtTelefonoProveedor.getText().length() > 0
+                || txtNombreContacto.getText().length() > 0) {
+
+            return true;//hay al menos un campo relleno
+
+        } else {
+            return false;//todos los campos estan vacios
         }
     }
 }
