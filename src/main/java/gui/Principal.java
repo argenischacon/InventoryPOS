@@ -438,6 +438,7 @@ public class Principal extends javax.swing.JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 cargarModeloTabla();
+                limpiarCampos();
             }
             
         });
