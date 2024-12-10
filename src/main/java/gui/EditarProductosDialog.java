@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import logica.Categoria;
 import logica.Proveedor;
@@ -283,7 +284,16 @@ public class EditarProductosDialog extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         if (changedFields()) {
-
+            int opcion = JOptionPane.showConfirmDialog(this, "¿Desea realmente modificar el producto?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if(opcion == JOptionPane.YES_OPTION){
+                //obtener campos
+                //crear objeto producto
+                //actualizarProducto(producto)
+                JOptionPane.showMessageDialog(this, "Modificacion exitosa", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "No se ha modificado ningún dato", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
@@ -372,8 +382,9 @@ public class EditarProductosDialog extends javax.swing.JDialog {
                 || !((UnidadDeMedida)cmbUnidad.getSelectedItem()).toString().equalsIgnoreCase(selectedProduct.getUnidadMedida())
                 || !txtPrecioCompra.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getPrecioCompraProducto()))
                 || !txtPrecioVenta.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getPrecioVentaProducto()))
-                || ((Categoria)cmbCategoria.getSelectedItem()).getIdCategoria() == selectedProduct.getCategoria()
-                || ((Proveedor)cmbProveedor.getSelectedItem()).getIdProveedor() == selectedProduct.getProveedor()){
+                || !(((Categoria)cmbCategoria.getSelectedItem()).getIdCategoria() == selectedProduct.getCategoria())
+                || !(((Proveedor)cmbProveedor.getSelectedItem()).getIdProveedor() == selectedProduct.getProveedor())
+                || fotoProductoFile != null){
             return true;//Hay al menos un campo modificado
         }else{
             return false;//No se modifico ningun campo
