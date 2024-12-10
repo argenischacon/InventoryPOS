@@ -259,6 +259,7 @@ public class Principal extends javax.swing.JFrame {
                 tblVentasKeyReleased(evt);
             }
         });
+        tblVentas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane2.setViewportView(tblVentas);
 
         txtBuscarProductoVenta.addKeyListener(new java.awt.event.KeyAdapter() {

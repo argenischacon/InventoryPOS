@@ -378,6 +378,9 @@
                   <Events>
                     <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tblVentasKeyReleased"/>
                   </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="tblVentas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);"/>
+                  </AuxValues>
                 </Component>
               </SubComponents>
             </Container>
