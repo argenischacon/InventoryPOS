@@ -122,7 +122,12 @@ public class Producto {
         this.proveedor = proveedor;
     }
 
+    @Override
+    public String toString() {
+        return nombreProducto;
+    }
 
+    
 
 
     
