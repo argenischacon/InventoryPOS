@@ -302,7 +302,7 @@ public class EditarProductosDialog extends javax.swing.JDialog {
                 String descripcionProducto = txtDescripcion.getText();
                 double stock = Double.parseDouble(txtStock.getText());
                 File fotoProducto = null;
-                if (fotoProductoFile != null) {
+                if (fotoProductoFile != null) { //verificamos si se selecciono una imagen
                     fotoProducto = fotoProductoFile;
                 }
                 String unidadMedida = ((UnidadDeMedida) cmbUnidad.getSelectedItem()).toString();

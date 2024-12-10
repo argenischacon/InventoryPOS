@@ -454,7 +454,7 @@ public class BaseDatos {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
             String sql = "";
-            if (producto.getFotoProducto() != null) {
+            if (producto.getFotoProducto() != null) { //Si se selecciono una imagen para el producto
                 sql = "UPDATE productos "
                         + "SET id_prod = ?, "
                         + "nom_prod = ?, "
@@ -482,7 +482,7 @@ public class BaseDatos {
                 st.setInt(11, producto.getProveedor());
                 st.setString(12, producto.getIdProducto());
 
-            } else {
+            } else { //Si NO se seleccion una imagen para el producto
                 sql = "UPDATE productos "
                         + "SET id_prod = ?, "
                         + "nom_prod = ?, "
