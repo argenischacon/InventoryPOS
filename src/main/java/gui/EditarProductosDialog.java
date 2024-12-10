@@ -99,6 +99,11 @@ public class EditarProductosDialog extends javax.swing.JDialog {
         jLabel8.setText("Proveedor");
 
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
@@ -264,9 +269,9 @@ public class EditarProductosDialog extends javax.swing.JDialog {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "png", "gif");
         chooser.addChoosableFileFilter(filter);
-        
+
         int returnVal = chooser.showOpenDialog(jPanel1);
-        if(returnVal == JFileChooser.APPROVE_OPTION){
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
             fotoProductoFile = chooser.getSelectedFile();
             ImageIcon selectedImage = new ImageIcon(fotoProductoFile.getAbsolutePath());
             lblImagenProducto.setIcon(new ImageIcon(selectedImage.getImage().getScaledInstance(lblImagenProducto.getWidth(), lblImagenProducto.getHeight(), Image.SCALE_DEFAULT)));
@@ -275,6 +280,12 @@ public class EditarProductosDialog extends javax.swing.JDialog {
 
     private void lblImagenProductoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenProductoMouseEntered
         lblImagenProducto.setCursor(new Cursor(Cursor.HAND_CURSOR));    }//GEN-LAST:event_lblImagenProductoMouseEntered
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        if (changedFields()) {
+
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -351,5 +362,21 @@ public class EditarProductosDialog extends javax.swing.JDialog {
         modeloProveedores = new DefaultComboBoxModel<>();
         modeloProveedores.addAll(base.obtenerProveedores());
 
+    }
+
+    private boolean changedFields() {
+        if (!txtClave.getText().equals(selectedProduct.getIdProducto())
+                || !txtNombre.getText().equals(selectedProduct.getNombreProducto())
+                || !txtDescripcion.getText().equals(selectedProduct.getDescripcionProducto())
+                || !txtStock.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getStock()))
+                || !((UnidadDeMedida)cmbUnidad.getSelectedItem()).toString().equalsIgnoreCase(selectedProduct.getUnidadMedida())
+                || !txtPrecioCompra.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getPrecioCompraProducto()))
+                || !txtPrecioVenta.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getPrecioVentaProducto()))
+                || ((Categoria)cmbCategoria.getSelectedItem()).getIdCategoria() == selectedProduct.getCategoria()
+                || ((Proveedor)cmbProveedor.getSelectedItem()).getIdProveedor() == selectedProduct.getProveedor()){
+            return true;//Hay al menos un campo modificado
+        }else{
+            return false;//No se modifico ningun campo
+        }
     }
 }
