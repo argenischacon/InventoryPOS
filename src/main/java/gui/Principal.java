@@ -337,6 +337,11 @@ public class Principal extends javax.swing.JFrame {
         );
 
         btnCancelarVenta.setText("Cancelar Venta");
+        btnCancelarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarVentaActionPerformed(evt);
+            }
+        });
 
         lblFotoProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -612,9 +617,21 @@ public class Principal extends javax.swing.JFrame {
             //Quitamos la seleccion
             tblVentas.clearSelection();
         }else{
-            JOptionPane.showMessageDialog(null, "No se selecciono ninguna fila");
+            JOptionPane.showMessageDialog(null, "No se selecciono ninguna fila", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnQuitarProductoActionPerformed
+
+    private void btnCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarVentaActionPerformed
+        
+        if(tblVentas.getRowCount() >0){
+        //Limpiar la tabla a traves del modelo
+        modeloTablaVentas.setRowCount(0);
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay productos en la venta", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        
+    }//GEN-LAST:event_btnCancelarVentaActionPerformed
 
     public static void main(String args[]) {
 
@@ -756,7 +773,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void actualizarMonto() {
-        if(tblVentas.getRowCount() > 0){
+        if(tblVentas.getRowCount() >= 0){
         double sumaImportes = 0D;
         
             for (int i = 0; i < tblVentas.getRowCount(); i++) {
