@@ -31,6 +31,7 @@ enums\CmbToLoad.class
 gui\ProductosDialog$4.class
 gui\Principal$1.class
 gui\Principal$8.class
+gui\Principal$15.class
 gui\ProveedoresDialog$2.class
 gui\ProductosDialog.class
 gui\EditarProductosDialog$5$1.class

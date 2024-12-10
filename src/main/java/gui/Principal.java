@@ -10,6 +10,8 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import logica.Producto;
 
@@ -39,9 +41,9 @@ public class Principal extends javax.swing.JFrame {
             "precio_compra", "precio_venta", "existencias"});
 
         cargarModeloTablaInventario();
-        //cargarModeloTablaVentas();
         initComponents();
-        addListSelectionListener();
+        addListSelectionListenerTblProd();
+        addTableModelListenerModelTblVentas();
         setLocationRelativeTo(null);
         cargarIconos();
     }
@@ -541,42 +543,27 @@ public class Principal extends javax.swing.JFrame {
         if (!(evt.getValueIsAdjusting()) && ListProductos.getSelectedIndex() != -1) {
             //Obtenemos el indice que corresponde al objeto seleccionado en la lista
             int indexRow = tableContainsProduct(ListProductos.getSelectedValue().getIdProducto());
-            System.out.println(indexRow);
 
             if (indexRow != -1) {//Si el producto ya esta agregado en la tabla
                 cant = (Double) modeloTablaVentas.getValueAt(indexRow, 3);
                 modeloTablaVentas.setValueAt(cant + 1.0, indexRow, 3);
-                System.out.println("cantidad actualizada : " + (cant + 1.0));
 
                 cant = (Double) modeloTablaVentas.getValueAt(indexRow, 3);
                 precioVenta = (Double) modeloTablaVentas.getValueAt(indexRow, 2);
                 modeloTablaVentas.setValueAt((cant * precioVenta), indexRow, 4);
-                System.out.println("importe actualizado: " + cant * precioVenta);
 
                 ListProductos.clearSelection();
             } else {
                 try {
-                    /*String canti = JOptionPane.showInputDialog(this, "Introduzca la cantidad");
-                    double cantidad = Double.parseDouble(canti);
-                    if(cantidad < 1){
-                        throw new NumberFormatException();
-                    }
-                    cargarModeloTablaVentas(ListProductos.getSelectedValue(), cantidad);
-                    ListProductos.clearSelection();*/
-                    
                     cargarModeloTablaVentas(ListProductos.getSelectedValue(), 1D);
                     ListProductos.clearSelection();
 
                 } catch (NumberFormatException e) {
                     JOptionPane.showMessageDialog(this, "La cantidad no es valida", "Error", JOptionPane.ERROR_MESSAGE);
                     ListProductos.clearSelection();
-                }catch (NullPointerException e){
-                    ListProductos.clearSelection();
                 }
             }
         }
-        
-        actualizarMonto();
 
     }//GEN-LAST:event_ListProductosValueChanged
 
@@ -670,7 +657,7 @@ public class Principal extends javax.swing.JFrame {
 
     }
 
-    private void addListSelectionListener() {
+    private void addListSelectionListenerTblProd() {
         tblProductos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -730,6 +717,16 @@ public class Principal extends javax.swing.JFrame {
             //Actualizo el monto
             lblMontoTotal.setText(String.valueOf(sumaImportes));
         }
+    }
+
+    private void addTableModelListenerModelTblVentas() {
+        modeloTablaVentas.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                //Actualizar el monto
+                actualizarMonto();
+            }
+        });
     }
 
 }
