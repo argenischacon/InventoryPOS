@@ -2,6 +2,7 @@ package datos;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -311,6 +312,8 @@ public class BaseDatos {
                 producto.setDescripcionProducto(rs.getString(3));
                 producto.setStock(rs.getDouble(4));
                 //falta foto
+
+                // producto.setFotoProducto(fotoProducto);
                 producto.setUnidadMedida(rs.getString(6));
                 producto.setPrecioCompraProducto(rs.getDouble(7));
                 producto.setPrecioVentaProducto(rs.getDouble(8));
@@ -402,7 +405,7 @@ public class BaseDatos {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
 
-            String sql = "DELETE FROM productos WHERE id_prod = '"+selectedId+"'";
+            String sql = "DELETE FROM productos WHERE id_prod = '" + selectedId + "'";
             st = conn.prepareStatement(sql);
 
             st.executeUpdate();
@@ -418,6 +421,34 @@ public class BaseDatos {
             }
         }
 
+    }
+
+    public InputStream buscarFoto(Producto selectedProduct) {
+        InputStream is = null;
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "SELECT foto_prod FROM productos WHERE id_prod = '"+selectedProduct.getIdProducto()+"'";
+            st = conn.prepareStatement(sql);
+
+            rs = st.executeQuery();
+            
+            while(rs.next()){
+              is = rs.getBinaryStream("foto_prod");
+            }
+            
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return is;
     }
 
 }
