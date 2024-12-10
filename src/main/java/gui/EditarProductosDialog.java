@@ -287,8 +287,26 @@ public class EditarProductosDialog extends javax.swing.JDialog {
             int opcion = JOptionPane.showConfirmDialog(this, "¿Desea realmente modificar el producto?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
             if(opcion == JOptionPane.YES_OPTION){
                 //obtener campos
+                String idProducto = txtClave.getText();
+                String nomProducto = txtNombre.getText();
+                String descripcionProducto = txtDescripcion.getText();
+                double stock = Double.parseDouble(txtStock.getText());
+                File fotoProducto = null;
+                if(fotoProductoFile == null){
+                    fotoProducto = selectedProduct.getFotoProducto();
+                }else{
+                    fotoProducto = fotoProductoFile;
+                }
+                String unidadMedida = ((UnidadDeMedida)cmbUnidad.getSelectedItem()).toString();
+                double precioCompra = Double.parseDouble(txtPrecioCompra.getText());
+                double precioVenta = Double.parseDouble(txtPrecioVenta.getText());
+                double existencias = selectedProduct.getExistenciasProducto();
+                int categoria = ((Categoria)cmbCategoria.getSelectedItem()).getIdCategoria();
+                int proveedor = ((Proveedor)cmbProveedor.getSelectedItem()).getIdProveedor();
                 //crear objeto producto
+                Producto producto = new Producto(idProducto, nomProducto, descripcionProducto, stock, fotoProducto, unidadMedida, precioCompra, precioVenta, existencias, categoria, proveedor);
                 //actualizarProducto(producto)
+                base.actualizarProducto(producto);
                 JOptionPane.showMessageDialog(this, "Modificacion exitosa", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
             }
