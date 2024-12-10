@@ -40,6 +40,7 @@ gui\EditarProductosDialog$5$1.class
 gui\Principal$12.class
 logica\Venta.class
 gui\Principal$5.class
+gui\Principal$19.class
 gui\EditarProductosDialog$5.class
 gui\ProveedoresDialog.class
 gui\ProductosDialog$8.class

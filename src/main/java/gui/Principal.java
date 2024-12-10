@@ -4,6 +4,8 @@ import datos.BaseDatos;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -15,6 +17,7 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import logica.Producto;
+import logica.Venta;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -27,12 +30,12 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         base = new BaseDatos();
-        modeloTablaVentas = new DefaultTableModel(){
+        modeloTablaVentas = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
-            
+
         };
         modeloTablaInventario = new DefaultTableModel();
         modeloLista = new DefaultListModel<>();
@@ -83,10 +86,10 @@ public class Principal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         lblMontoTotal = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        btnRealizarVenta = new javax.swing.JButton();
         jLabel10 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
-        jTextField8 = new javax.swing.JTextField();
+        txtPagoCon = new javax.swing.JTextField();
+        txtRecibe = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         btnCancelarVenta = new javax.swing.JButton();
         lblFotoProducto = new javax.swing.JLabel();
@@ -281,16 +284,21 @@ public class Principal extends javax.swing.JFrame {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Venta Total");
 
-        jButton4.setBackground(new java.awt.Color(255, 51, 51));
-        jButton4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jButton4.setText("Realizar Venta");
+        btnRealizarVenta.setBackground(new java.awt.Color(255, 51, 51));
+        btnRealizarVenta.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        btnRealizarVenta.setText("Realizar Venta");
+        btnRealizarVenta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRealizarVentaActionPerformed(evt);
+            }
+        });
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel10.setText("Pago con: ");
 
-        jTextField7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPagoCon.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        jTextField8.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtRecibe.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel11.setText("Recibe:");
@@ -309,9 +317,9 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jTextField7)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
-                        .addComponent(jTextField8, javax.swing.GroupLayout.Alignment.TRAILING)))
+                        .addComponent(txtPagoCon)
+                        .addComponent(btnRealizarVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                        .addComponent(txtRecibe, javax.swing.GroupLayout.Alignment.TRAILING)))
                 .addGap(55, 55, 55))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
@@ -327,13 +335,13 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(2, 2, 2)
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtPagoCon, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel11)
                 .addGap(7, 7, 7)
-                .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txtRecibe, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnRealizarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
 
@@ -585,23 +593,23 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_ListProductosValueChanged
 
     private void tblVentasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVentasKeyReleased
-        if(evt.getKeyCode() == KeyEvent.VK_F2){
-            try{
-            int filaSeleccionada = tblVentas.getSelectedRow();
-            String cantidadActual = tblVentas.getValueAt(filaSeleccionada, 3).toString();
-            //Pedimos nueva cantidad
-            double nuevaCantidad = Double.parseDouble(JOptionPane.showInputDialog("Ingresa la cantidad", cantidadActual));
-            if(nuevaCantidad < 1){
-                throw new NumberFormatException("La cantidad no puede ser menor a 1");
-            }
-            double precioVenta = (Double)tblVentas.getValueAt(filaSeleccionada, 2);
-            //la columna con el indice 3 es cantidad
-            //Seteamos la nueva cantidad en fila seleccionada
-            tblVentas.setValueAt(nuevaCantidad, filaSeleccionada, 3);
-            //Seteamos el importe en la fila seleccionada
-            tblVentas.setValueAt((precioVenta * nuevaCantidad), filaSeleccionada, 4);
-            tblVentas.clearSelection();
-            }catch(NumberFormatException ex){
+        if (evt.getKeyCode() == KeyEvent.VK_F2) {
+            try {
+                int filaSeleccionada = tblVentas.getSelectedRow();
+                String cantidadActual = tblVentas.getValueAt(filaSeleccionada, 3).toString();
+                //Pedimos nueva cantidad
+                double nuevaCantidad = Double.parseDouble(JOptionPane.showInputDialog("Ingresa la cantidad", cantidadActual));
+                if (nuevaCantidad < 1) {
+                    throw new NumberFormatException("La cantidad no puede ser menor a 1");
+                }
+                double precioVenta = (Double) tblVentas.getValueAt(filaSeleccionada, 2);
+                //la columna con el indice 3 es cantidad
+                //Seteamos la nueva cantidad en fila seleccionada
+                tblVentas.setValueAt(nuevaCantidad, filaSeleccionada, 3);
+                //Seteamos el importe en la fila seleccionada
+                tblVentas.setValueAt((precioVenta * nuevaCantidad), filaSeleccionada, 4);
+                tblVentas.clearSelection();
+            } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Cantidad no valida", "Error", JOptionPane.ERROR_MESSAGE);
                 System.out.println(ex);
             }
@@ -610,29 +618,47 @@ public class Principal extends javax.swing.JFrame {
 
     private void btnQuitarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarProductoActionPerformed
         //verificamos que haya una fila seleccionada
-        if(tblVentas.getSelectedRow() != -1){
+        if (tblVentas.getSelectedRow() != -1) {
             //Obtenemos el indice de la fila seleccionada
             int filaSeleccionada = tblVentas.getSelectedRow();
             //Removemos la fila seleccionada del modelo
             modeloTablaVentas.removeRow(filaSeleccionada);
             //Quitamos la seleccion
             tblVentas.clearSelection();
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No se selecciono ninguna fila", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnQuitarProductoActionPerformed
 
     private void btnCancelarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarVentaActionPerformed
-        
-        if(tblVentas.getRowCount() >0){
-        //Limpiar la tabla a traves del modelo
-        modeloTablaVentas.setRowCount(0);
-        }else{
+
+        if (tblVentas.getRowCount() > 0) {
+            //Limpiar la tabla a traves del modelo
+            modeloTablaVentas.setRowCount(0);
+        } else {
             JOptionPane.showMessageDialog(null, "No hay productos en la venta", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        
+
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
+
+    private void btnRealizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarVentaActionPerformed
+        if (tblVentas.getRowCount() != 0) {
+            //Obtenemos la fecha con LocalDate
+            LocalDate fechaActual = LocalDate.now();
+            Date fecha = Date.valueOf(fechaActual);
+            //creamos la venta
+            Venta venta = new Venta(0, actualizarMonto(), fecha);
+            //Persistir en la base de datos
+            base.insertarVenta(venta);
+            JOptionPane.showMessageDialog(null, "Venta exitosa", "Listo", JOptionPane.INFORMATION_MESSAGE);
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "No hay productos agregados", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_btnRealizarVentaActionPerformed
 
     public static void main(String args[]) {
 
@@ -673,7 +699,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnEliminarArticulo;
     private javax.swing.JButton btnProveedores;
     private javax.swing.JButton btnQuitarProducto;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnRealizarVenta;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -690,8 +716,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
     private javax.swing.JLabel lblFotoProducto;
     private javax.swing.JLabel lblMontoTotal;
     private javax.swing.JPanel panelInventario;
@@ -704,6 +728,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextField txtExistencia;
     private javax.swing.JTextField txtIngresarAlInventario;
     private javax.swing.JTextField txtNombreProducto;
+    private javax.swing.JTextField txtPagoCon;
+    private javax.swing.JTextField txtRecibe;
     // End of variables declaration//GEN-END:variables
 
     private void cargarIconos() {
@@ -773,17 +799,18 @@ public class Principal extends javax.swing.JFrame {
         return -1;
     }
 
-    private void actualizarMonto() {
-        if(tblVentas.getRowCount() >= 0){
+    private double actualizarMonto() {
         double sumaImportes = 0D;
-        
+        if (tblVentas.getRowCount() >= 0) {
+
             for (int i = 0; i < tblVentas.getRowCount(); i++) {
                 sumaImportes += (Double) modeloTablaVentas.getValueAt(i, 4);
             }
-            
+
             //Actualizo el monto
             lblMontoTotal.setText(String.valueOf(sumaImportes));
         }
+        return sumaImportes;
     }
 
     private void addTableModelListenerModelTblVentas() {
