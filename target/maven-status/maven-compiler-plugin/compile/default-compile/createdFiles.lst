@@ -17,6 +17,7 @@ logica\Categoria.class
 datos\BaseDatos.class
 gui\EditarProductosDialog.class
 gui\ProductosDialog$3.class
+gui\Principal$14.class
 logica\Producto.class
 gui\CategoriasDialog.class
 gui\Principal$11.class

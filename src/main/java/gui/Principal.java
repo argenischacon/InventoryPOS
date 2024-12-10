@@ -24,7 +24,13 @@ public class Principal extends javax.swing.JFrame {
 
     public Principal() {
         base = new BaseDatos();
-        modeloTablaVentas = new DefaultTableModel();
+        modeloTablaVentas = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+            
+        };
         modeloTablaInventario = new DefaultTableModel();
         modeloLista = new DefaultListModel<>();
 
@@ -322,7 +328,11 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(16, 16, 16))
         );
 
+        jButton3.setText("Cancelar Venta");
+
         lblFotoProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jButton5.setText("Quitar Producto");
 
         ListProductos.setModel(modeloLista);
         ListProductos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -546,12 +556,15 @@ public class Principal extends javax.swing.JFrame {
                 ListProductos.clearSelection();
             } else {
                 try {
-                    String canti = JOptionPane.showInputDialog(this, "Introduzca la cantidad");
+                    /*String canti = JOptionPane.showInputDialog(this, "Introduzca la cantidad");
                     double cantidad = Double.parseDouble(canti);
                     if(cantidad < 1){
                         throw new NumberFormatException();
                     }
                     cargarModeloTablaVentas(ListProductos.getSelectedValue(), cantidad);
+                    ListProductos.clearSelection();*/
+                    
+                    cargarModeloTablaVentas(ListProductos.getSelectedValue(), 1D);
                     ListProductos.clearSelection();
 
                 } catch (NumberFormatException e) {
