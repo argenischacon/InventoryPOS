@@ -25,14 +25,17 @@ gui\ProveedoresDialog$3$1.class
 gui\CategoriasDialog$3.class
 gui\Principal$4.class
 gui\ProductosDialog$7.class
+enums\CmbToLoad.class
 gui\ProductosDialog$4.class
 gui\Principal$1.class
 gui\Principal$8.class
 gui\ProveedoresDialog$2.class
 gui\ProductosDialog.class
+gui\EditarProductosDialog$5$1.class
 gui\Principal$12.class
 logica\Venta.class
 gui\Principal$5.class
+gui\EditarProductosDialog$5.class
 gui\ProveedoresDialog.class
 gui\ProductosDialog$8.class
 gui\CategoriasDialog$1.class

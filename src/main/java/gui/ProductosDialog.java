@@ -1,6 +1,7 @@
 package gui;
 
 import datos.BaseDatos;
+import enums.CmbToLoad;
 import enums.UnidadDeMedida;
 import interfaces.CategoriaAddedListener;
 import interfaces.ProveedorAddedListener;
@@ -42,7 +43,7 @@ public class ProductosDialog extends javax.swing.JDialog {
         modeloCategorias = new DefaultComboBoxModel<>();
         modeloProveedores = new DefaultComboBoxModel<>();
         initComponents();
-        cargarModelos();
+        cargarModelos(CmbToLoad.CATEGORIAYPROVEEDOR);
         cargarIconos();
     }
 
@@ -291,7 +292,7 @@ public class ProductosDialog extends javax.swing.JDialog {
         modalCategorias.addCategoriaListener(new CategoriaAddedListener() {
             @Override
             public void CategoriaAdded(Categoria categoriaAdded) {
-                cargarModelos();
+                cargarModelos(CmbToLoad.CATEGORIA);
                 cmbCategoria.setSelectedItem(categoriaAdded);
             }
         });
@@ -307,7 +308,7 @@ public class ProductosDialog extends javax.swing.JDialog {
         modalProveedores.addProveedorListener(new ProveedorAddedListener() {
             @Override
             public void ProveedorAdded(Proveedor proveedorAdded) {
-                cargarModelos();
+                cargarModelos(CmbToLoad.PROVEEDOR);
                 cmbProveedor.setSelectedItem(proveedorAdded);
             }
         });
@@ -469,17 +470,30 @@ public class ProductosDialog extends javax.swing.JDialog {
         lblImagenArticulo.setIcon(new ImageIcon(iconAddImageNoFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
     }
 
-    private void cargarModelos() {
-        modeloCategorias.removeAllElements();
-        modeloCategorias.addAll(baseDatos.obtenerCategoria());
-        modeloProveedores.removeAllElements();
-        modeloProveedores.addAll(baseDatos.obtenerProveedores());
-        //setear a los comboBox
-        cmbCategoria.setModel(modeloCategorias);
-        //cmbCategoria.setSelectedIndex(0);
-        cmbProveedor.setModel(modeloProveedores);
-        //cmbProveedor.setSelectedIndex(0);
+    private void cargarModelos(CmbToLoad tipo) {
+        if (tipo == CmbToLoad.CATEGORIA) {
+            modeloCategorias.removeAllElements();
+            modeloCategorias.addAll(baseDatos.obtenerCategoria());
 
+            cmbCategoria.setModel(modeloCategorias);
+        }
+
+        if (tipo == CmbToLoad.PROVEEDOR) {
+            modeloProveedores.removeAllElements();
+            modeloProveedores.addAll(baseDatos.obtenerProveedores());
+
+            cmbProveedor.setModel(modeloProveedores);
+        }
+
+        if (tipo == CmbToLoad.CATEGORIAYPROVEEDOR) {
+            modeloCategorias.removeAllElements();
+            modeloCategorias.addAll(baseDatos.obtenerCategoria());
+            cmbCategoria.setModel(modeloCategorias);
+
+            modeloProveedores.removeAllElements();
+            modeloProveedores.addAll(baseDatos.obtenerProveedores());
+            cmbProveedor.setModel(modeloProveedores);
+        }
     }
 
     private boolean isCamposVacios() {

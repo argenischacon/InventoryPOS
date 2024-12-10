@@ -111,6 +111,11 @@ public class EditarProductosDialog extends javax.swing.JDialog {
         });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         lblImagenProducto.setToolTipText("Cambiar imagen");
         lblImagenProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -239,16 +244,19 @@ public class EditarProductosDialog extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         try {
-            //Setear la informacion del producto en los campos y la imagen del producto
-            txtClave.setText(selectedProduct.getIdProducto());
-            txtNombre.setText(selectedProduct.getNombreProducto());
-            txtDescripcion.setText(selectedProduct.getDescripcionProducto());
-            //foto
+            //Obtener foto de la base de datos y setear icono en la etiqueta
             InputStream inputStream = base.buscarFoto(selectedProduct);
             BufferedImage bufferedImage = ImageIO.read(inputStream);
             ImageIcon imageIcon = new ImageIcon(bufferedImage);
             lblImagenProducto.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(lblImagenProducto.getWidth(), lblImagenProducto.getHeight(), Image.SCALE_DEFAULT)));
 
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            //Setear la informacion del producto en los campos  y comboBoxes
+            txtClave.setText(selectedProduct.getIdProducto());
+            txtNombre.setText(selectedProduct.getNombreProducto());
+            txtDescripcion.setText(selectedProduct.getDescripcionProducto());
             txtStock.setText(String.valueOf(selectedProduct.getStock()));
             UnidadDeMedida unidadDeMedida = UnidadDeMedida.valueOf(selectedProduct.getUnidadMedida().toUpperCase());
             cmbUnidad.setSelectedItem(unidadDeMedida);
@@ -265,8 +273,6 @@ public class EditarProductosDialog extends javax.swing.JDialog {
                     cmbProveedor.setSelectedItem(pv);
                 }
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }//GEN-LAST:event_formWindowOpened
 
@@ -323,6 +329,10 @@ public class EditarProductosDialog extends javax.swing.JDialog {
         }
 
     }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
