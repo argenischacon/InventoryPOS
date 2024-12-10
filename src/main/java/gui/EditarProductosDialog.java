@@ -73,7 +73,11 @@ public class EditarProductosDialog extends javax.swing.JDialog {
             }
         });
 
+        txtClave.setEnabled(false);
+
         jLabel1.setText("Clave");
+
+        txtNombre.setEnabled(false);
 
         jLabel2.setText("Nombre");
 
@@ -270,12 +274,17 @@ public class EditarProductosDialog extends javax.swing.JDialog {
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("Archivos de imagen", "jpg", "jpeg", "png", "gif");
         chooser.addChoosableFileFilter(filter);
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
         int returnVal = chooser.showOpenDialog(jPanel1);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            fotoProductoFile = chooser.getSelectedFile();
-            ImageIcon selectedImage = new ImageIcon(fotoProductoFile.getAbsolutePath());
-            lblImagenProducto.setIcon(new ImageIcon(selectedImage.getImage().getScaledInstance(lblImagenProducto.getWidth(), lblImagenProducto.getHeight(), Image.SCALE_DEFAULT)));
+            if (!chooser.getSelectedFile().exists()) {
+                JOptionPane.showMessageDialog(this, "La imagen seleccionada no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            } else {
+                fotoProductoFile = chooser.getSelectedFile();
+                ImageIcon selectedImage = new ImageIcon(fotoProductoFile.getAbsolutePath());
+                lblImagenProducto.setIcon(new ImageIcon(selectedImage.getImage().getScaledInstance(lblImagenProducto.getWidth(), lblImagenProducto.getHeight(), Image.SCALE_SMOOTH)));
+            }
         }
     }//GEN-LAST:event_lblImagenProductoMousePressed
 
@@ -283,26 +292,25 @@ public class EditarProductosDialog extends javax.swing.JDialog {
         lblImagenProducto.setCursor(new Cursor(Cursor.HAND_CURSOR));    }//GEN-LAST:event_lblImagenProductoMouseEntered
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+
         if (changedFields()) {
             int opcion = JOptionPane.showConfirmDialog(this, "¿Desea realmente modificar el producto?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if(opcion == JOptionPane.YES_OPTION){
+            if (opcion == JOptionPane.YES_OPTION) {
                 //obtener campos
                 String idProducto = txtClave.getText();
                 String nomProducto = txtNombre.getText();
                 String descripcionProducto = txtDescripcion.getText();
                 double stock = Double.parseDouble(txtStock.getText());
                 File fotoProducto = null;
-                if(fotoProductoFile == null){
-                    fotoProducto = selectedProduct.getFotoProducto();
-                }else{
+                if (fotoProductoFile != null) {
                     fotoProducto = fotoProductoFile;
                 }
-                String unidadMedida = ((UnidadDeMedida)cmbUnidad.getSelectedItem()).toString();
+                String unidadMedida = ((UnidadDeMedida) cmbUnidad.getSelectedItem()).toString();
                 double precioCompra = Double.parseDouble(txtPrecioCompra.getText());
                 double precioVenta = Double.parseDouble(txtPrecioVenta.getText());
                 double existencias = selectedProduct.getExistenciasProducto();
-                int categoria = ((Categoria)cmbCategoria.getSelectedItem()).getIdCategoria();
-                int proveedor = ((Proveedor)cmbProveedor.getSelectedItem()).getIdProveedor();
+                int categoria = ((Categoria) cmbCategoria.getSelectedItem()).getIdCategoria();
+                int proveedor = ((Proveedor) cmbProveedor.getSelectedItem()).getIdProveedor();
                 //crear objeto producto
                 Producto producto = new Producto(idProducto, nomProducto, descripcionProducto, stock, fotoProducto, unidadMedida, precioCompra, precioVenta, existencias, categoria, proveedor);
                 //actualizarProducto(producto)
@@ -310,9 +318,10 @@ public class EditarProductosDialog extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "Modificacion exitosa", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(this, "No se ha modificado ningún dato", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     public static void main(String args[]) {
@@ -397,14 +406,14 @@ public class EditarProductosDialog extends javax.swing.JDialog {
                 || !txtNombre.getText().equals(selectedProduct.getNombreProducto())
                 || !txtDescripcion.getText().equals(selectedProduct.getDescripcionProducto())
                 || !txtStock.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getStock()))
-                || !((UnidadDeMedida)cmbUnidad.getSelectedItem()).toString().equalsIgnoreCase(selectedProduct.getUnidadMedida())
+                || !((UnidadDeMedida) cmbUnidad.getSelectedItem()).toString().equalsIgnoreCase(selectedProduct.getUnidadMedida())
                 || !txtPrecioCompra.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getPrecioCompraProducto()))
                 || !txtPrecioVenta.getText().equalsIgnoreCase(String.valueOf(selectedProduct.getPrecioVentaProducto()))
-                || !(((Categoria)cmbCategoria.getSelectedItem()).getIdCategoria() == selectedProduct.getCategoria())
-                || !(((Proveedor)cmbProveedor.getSelectedItem()).getIdProveedor() == selectedProduct.getProveedor())
-                || fotoProductoFile != null){
+                || !(((Categoria) cmbCategoria.getSelectedItem()).getIdCategoria() == selectedProduct.getCategoria())
+                || !(((Proveedor) cmbProveedor.getSelectedItem()).getIdProveedor() == selectedProduct.getProveedor())
+                || fotoProductoFile != null) {
             return true;//Hay al menos un campo modificado
-        }else{
+        } else {
             return false;//No se modifico ningun campo
         }
     }

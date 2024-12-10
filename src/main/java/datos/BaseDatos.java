@@ -313,9 +313,7 @@ public class BaseDatos {
                 producto.setNombreProducto(rs.getString(2));
                 producto.setDescripcionProducto(rs.getString(3));
                 producto.setStock(rs.getDouble(4));
-                //falta foto
 
-                // producto.setFotoProducto(fotoProducto);
                 producto.setUnidadMedida(rs.getString(6));
                 producto.setPrecioCompraProducto(rs.getDouble(7));
                 producto.setPrecioVentaProducto(rs.getDouble(8));
@@ -455,36 +453,62 @@ public class BaseDatos {
     public void actualizarProducto(Producto producto) {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            String sql = "";
+            if (producto.getFotoProducto() != null) {
+                sql = "UPDATE productos "
+                        + "SET id_prod = ?, "
+                        + "nom_prod = ?, "
+                        + "desc_prod = ?, "
+                        + "stock_prod = ?, "
+                        + "foto_prod = ?, "
+                        + "unidad_prod = ?, "
+                        + "precio_compra_prod = ?, "
+                        + "precio_venta_prod = ?, "
+                        + "existencias_prod = ?, "
+                        + "id_categoria_prod = ?, "
+                        + "id_proveedor = ? "
+                        + "WHERE id_prod = ?";
+                st = conn.prepareStatement(sql);
+                st.setString(1, producto.getIdProducto());
+                st.setString(2, producto.getNombreProducto());
+                st.setString(3, producto.getDescripcionProducto());
+                st.setDouble(4, producto.getStock());
+                st.setBinaryStream(5, new FileInputStream(producto.getFotoProducto()), producto.getFotoProducto().length());
+                st.setString(6, producto.getUnidadMedida());
+                st.setDouble(7, producto.getPrecioCompraProducto());
+                st.setDouble(8, producto.getPrecioVentaProducto());
+                st.setDouble(9, producto.getExistenciasProducto());
+                st.setInt(10, producto.getCategoria());
+                st.setInt(11, producto.getProveedor());
+                st.setString(12, producto.getIdProducto());
 
-            String sql = "UPDATE productos "
-                    + "SET id_prod = ?, "
-                    + "nom_prod = ?, "
-                    + "desc_prod = ?, "
-                    + "stock_prod = ?, "
-                    + "foto_prod = ?, " 
-                    + "unidad_prod = ?, "
-                    + "precio_compra_prod = ?, "
-                    + "precio_venta_prod = ?, "
-                    + "existencias_prod = ?, "
-                    + "id_categoria_prod = ?, "
-                    + "id_proveedor = ? "
-                    + "WHERE id_prod = ?";
-           
-            st = conn.prepareStatement(sql);
-            st.setString(1, producto.getIdProducto());
-            st.setString(2, producto.getNombreProducto());
-            st.setString(3, producto.getDescripcionProducto());
-            st.setDouble(4, producto.getStock());
-            st.setBinaryStream(5, new FileInputStream(producto.getFotoProducto()), producto.getFotoProducto().length());
-            st.setString(6, producto.getUnidadMedida());
-            st.setDouble(7, producto.getPrecioCompraProducto());
-            st.setDouble(8, producto.getPrecioVentaProducto());
-            st.setDouble(9, producto.getExistenciasProducto());
-            st.setInt(10, producto.getCategoria());
-            st.setInt(11, producto.getProveedor());
-            st.setString(12, producto.getIdProducto());
-            
-            
+            } else {
+                sql = "UPDATE productos "
+                        + "SET id_prod = ?, "
+                        + "nom_prod = ?, "
+                        + "desc_prod = ?, "
+                        + "stock_prod = ?, "
+                        + "unidad_prod = ?, "
+                        + "precio_compra_prod = ?, "
+                        + "precio_venta_prod = ?, "
+                        + "existencias_prod = ?, "
+                        + "id_categoria_prod = ?, "
+                        + "id_proveedor = ? "
+                        + "WHERE id_prod = ?";
+                st = conn.prepareStatement(sql);
+                st.setString(1, producto.getIdProducto());
+                st.setString(2, producto.getNombreProducto());
+                st.setString(3, producto.getDescripcionProducto());
+                st.setDouble(4, producto.getStock());
+                st.setString(5, producto.getUnidadMedida());
+                st.setDouble(6, producto.getPrecioCompraProducto());
+                st.setDouble(7, producto.getPrecioVentaProducto());
+                st.setDouble(8, producto.getExistenciasProducto());
+                st.setInt(9, producto.getCategoria());
+                st.setInt(10, producto.getProveedor());
+                st.setString(11, producto.getIdProducto());
+            }
+
             st.executeUpdate();
 
         } catch (SQLException ex) {
