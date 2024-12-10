@@ -1,6 +1,7 @@
 package gui;
 
 import datos.BaseDatos;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
@@ -253,6 +254,11 @@ public class Principal extends javax.swing.JFrame {
         jTabbedPane1.addTab("Inventario", panelInventario);
 
         tblVentas.setModel(modeloTablaVentas);
+        tblVentas.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                tblVentasKeyReleased(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblVentas);
 
         txtBuscarProductoVenta.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -566,6 +572,30 @@ public class Principal extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_ListProductosValueChanged
+
+    private void tblVentasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVentasKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_F2){
+            try{
+            int filaSeleccionada = tblVentas.getSelectedRow();
+            String cantidadActual = tblVentas.getValueAt(filaSeleccionada, 3).toString();
+            //Pedimos nueva cantidad
+            double nuevaCantidad = Double.parseDouble(JOptionPane.showInputDialog("Ingresa la cantidad", cantidadActual));
+            if(nuevaCantidad < 1){
+                throw new NumberFormatException("La cantidad no puede ser menor a 1");
+            }
+            double precioVenta = (Double)tblVentas.getValueAt(filaSeleccionada, 2);
+            //la columna con el indice 3 es cantidad
+            //Seteamos la nueva cantidad en fila seleccionada
+            tblVentas.setValueAt(nuevaCantidad, filaSeleccionada, 3);
+            //Seteamos el importe en la fila seleccionada
+            tblVentas.setValueAt((precioVenta * nuevaCantidad), filaSeleccionada, 4);
+            tblVentas.clearSelection();
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Cantidad no valida", "Error", JOptionPane.ERROR_MESSAGE);
+                System.out.println(ex);
+            }
+        }
+    }//GEN-LAST:event_tblVentasKeyReleased
 
     public static void main(String args[]) {
 

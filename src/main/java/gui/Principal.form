@@ -375,6 +375,9 @@
                       <Connection code="modeloTablaVentas" type="code"/>
                     </Property>
                   </Properties>
+                  <Events>
+                    <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="tblVentasKeyReleased"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
