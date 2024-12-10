@@ -304,9 +304,9 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jButton5" min="-2" pref="134" max="-2" attributes="0"/>
+                                      <Component id="btnQuitarProducto" min="-2" pref="134" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
-                                      <Component id="jButton3" min="-2" pref="134" max="-2" attributes="0"/>
+                                      <Component id="btnCancelarVenta" min="-2" pref="134" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" pref="251" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
@@ -347,8 +347,8 @@
                               <Component id="jScrollPane2" min="-2" pref="408" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jButton3" min="-2" pref="39" max="-2" attributes="0"/>
-                                  <Component id="jButton5" alignment="0" min="-2" pref="39" max="-2" attributes="0"/>
+                                  <Component id="btnCancelarVenta" min="-2" pref="39" max="-2" attributes="0"/>
+                                  <Component id="btnQuitarProducto" alignment="0" min="-2" pref="39" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
                           </Group>
@@ -514,7 +514,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton3">
+            <Component class="javax.swing.JButton" name="btnCancelarVenta">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Cancelar Venta"/>
               </Properties>
@@ -528,10 +528,13 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton5">
+            <Component class="javax.swing.JButton" name="btnQuitarProducto">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Quitar Producto"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnQuitarProductoActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane3">
               <AuxValues>

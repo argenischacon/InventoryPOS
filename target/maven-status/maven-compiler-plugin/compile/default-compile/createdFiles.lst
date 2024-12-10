@@ -8,6 +8,7 @@ gui\ProductosDialog$5.class
 interfaces\ProveedorAddedListener.class
 gui\CategoriasDialog$2.class
 gui\Principal$3.class
+gui\Principal$17.class
 gui\EditarProductosDialog$2.class
 logica\Proveedor.class
 gui\Principal.class

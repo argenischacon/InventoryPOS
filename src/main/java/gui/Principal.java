@@ -88,9 +88,9 @@ public class Principal extends javax.swing.JFrame {
         jTextField7 = new javax.swing.JTextField();
         jTextField8 = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        btnCancelarVenta = new javax.swing.JButton();
         lblFotoProducto = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
+        btnQuitarProducto = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         ListProductos = new javax.swing.JList<>();
 
@@ -336,11 +336,16 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(16, 16, 16))
         );
 
-        jButton3.setText("Cancelar Venta");
+        btnCancelarVenta.setText("Cancelar Venta");
 
         lblFotoProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jButton5.setText("Quitar Producto");
+        btnQuitarProducto.setText("Quitar Producto");
+        btnQuitarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnQuitarProductoActionPerformed(evt);
+            }
+        });
 
         ListProductos.setModel(modeloLista);
         ListProductos.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
@@ -364,9 +369,9 @@ public class Principal extends javax.swing.JFrame {
                                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 802, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVentasLayout.createSequentialGroup()
-                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnQuitarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(91, 91, 91)
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(btnCancelarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(251, 251, 251)))
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
@@ -397,8 +402,8 @@ public class Principal extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnCancelarVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnQuitarProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(8, 8, 8))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVentasLayout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -597,6 +602,20 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tblVentasKeyReleased
 
+    private void btnQuitarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnQuitarProductoActionPerformed
+        //verificamos que haya una fila seleccionada
+        if(tblVentas.getSelectedRow() != -1){
+            //Obtenemos el indice de la fila seleccionada
+            int filaSeleccionada = tblVentas.getSelectedRow();
+            //Removemos la fila seleccionada del modelo
+            modeloTablaVentas.removeRow(filaSeleccionada);
+            //Quitamos la seleccion
+            tblVentas.clearSelection();
+        }else{
+            JOptionPane.showMessageDialog(null, "No se selecciono ninguna fila");
+        }
+    }//GEN-LAST:event_btnQuitarProductoActionPerformed
+
     public static void main(String args[]) {
 
         try {
@@ -630,13 +649,13 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JList<Producto> ListProductos;
     private javax.swing.JButton btnAgregarExistencia;
     private javax.swing.JButton btnArticulos;
+    private javax.swing.JButton btnCancelarVenta;
     private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnEditarArticulo;
     private javax.swing.JButton btnEliminarArticulo;
     private javax.swing.JButton btnProveedores;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnQuitarProducto;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
