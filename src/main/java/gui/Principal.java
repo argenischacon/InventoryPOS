@@ -146,12 +146,18 @@ public class Principal extends javax.swing.JFrame {
         tblProductos.getColumn("descripcion").setPreferredWidth(200);
         jScrollPane1.setViewportView(tblProductos);
 
+        txtClaveProducto.setEditable(false);
+
+        txtNombreProducto.setEditable(false);
+
         jLabel1.setText("Clave");
 
         jLabel2.setText("Nombre");
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel3.setText("Busqueda");
+
+        txtExistencia.setEditable(false);
 
         jLabel5.setText("Existencia");
 
