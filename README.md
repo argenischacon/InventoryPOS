@@ -1,2 +1,2 @@
 # GestorComercial
-Sistema para la gestión de inventarios y ventas con funcionalidades avanzadas como escaneo de códigos de barras y registro de múltiples productos en una sola transacción.
+Sistema para la gestión de inventario y ventas diseñado para pequeñas y medianas empresas. Permite registrar productos, administrar su inventario y realizar ventas de manera eficiente
