@@ -9,8 +9,10 @@ import java.awt.Cursor;
 import java.awt.Frame;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -35,11 +37,7 @@ public class ProductosDialog extends javax.swing.JDialog {
     public ProductosDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         baseDatos = new BaseDatos();
-        try {
-            imgArticleFile = new File(getClass().getResource("/sinImagen.png").toURI());
-        } catch (URISyntaxException ex) {
-            ex.printStackTrace();
-        }
+        imgArticleFile = crearArchivoTemporalDeImagen();
         modeloCategorias = new DefaultComboBoxModel<>();
         modeloProveedores = new DefaultComboBoxModel<>();
         initComponents();
@@ -323,13 +321,11 @@ public class ProductosDialog extends javax.swing.JDialog {
     private void lblImagenArticuloMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblImagenArticuloMouseEntered
         lblImagenArticulo.setCursor(new Cursor(Cursor.HAND_CURSOR));
         try {
-            File file = new File(getClass().getResource("/sinImagen.png").toURI());
+            File file = crearArchivoTemporalDeImagen();
             String path = file.getCanonicalPath();
             if (imgArticleFile.getCanonicalPath().equals(path)) {
                 lblImagenArticulo.setIcon(new ImageIcon(iconAddImageFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
             }
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -340,13 +336,11 @@ public class ProductosDialog extends javax.swing.JDialog {
         lblImagenArticulo.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
         try {
-            File file = new File(getClass().getResource("/sinImagen.png").toURI());
+            File file = crearArchivoTemporalDeImagen();
             String path = file.getCanonicalPath();
             if (imgArticleFile.getCanonicalPath().equals(path)) {
                 lblImagenArticulo.setIcon(new ImageIcon(iconAddImageNoFocus.getImage().getScaledInstance(lblImagenArticulo.getWidth(), lblImagenArticulo.getHeight(), Image.SCALE_DEFAULT)));
             }
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(ProductosDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -523,6 +517,39 @@ public class ProductosDialog extends javax.swing.JDialog {
         } else {
             return false;//todos los campos estan vacios
         }
+    }
+
+    private File crearArchivoTemporalDeImagen() {
+        File tempFile = null;
+        try {
+            // Intentar obtener el recurso (sinImagen.png) dentro del JAR
+            InputStream imgInputStream = getClass().getResourceAsStream("/sinImagen.png");
+
+            if (imgInputStream != null) {
+                // Si la imagen está dentro del JAR, la copiamos a un archivo temporal
+                tempFile = new File(System.getProperty("java.io.tmpdir"), "sinImagen.png");
+
+                // Copiar la imagen del JAR a un archivo temporal
+                try (OutputStream out = new FileOutputStream(tempFile)) {
+                    byte[] buffer = new byte[1024];
+                    int length;
+                    while ((length = imgInputStream.read(buffer)) != -1) {
+                        out.write(buffer, 0, length);
+                    }
+                }
+
+                
+
+                // Puedes usar el File imgArticleFile en la base de datos ahora
+                //System.out.println("Imagen copiada a: " + imgArticleFile.getAbsolutePath());
+            } else {
+                System.out.println("Imagen no encontrada en el JAR.");
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return tempFile;
     }
 
 }
