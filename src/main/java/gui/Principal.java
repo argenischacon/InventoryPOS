@@ -1,12 +1,21 @@
 package gui;
 
 import datos.BaseDatos;
+import java.awt.Color;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -47,6 +56,7 @@ public class Principal extends javax.swing.JFrame {
 
         cargarModeloTablaInventario();
         initComponents();
+        addListSelectionListenerTblVentas();
         addListSelectionListenerTblProd();
         addTableModelListenerModelTblVentas();
         setLocationRelativeTo(null);
@@ -277,7 +287,8 @@ public class Principal extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        lblMontoTotal.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        lblMontoTotal.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        lblMontoTotal.setForeground(new java.awt.Color(204, 0, 51));
         lblMontoTotal.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblMontoTotal.setText("0.00");
 
@@ -285,7 +296,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Venta Total");
 
-        btnRealizarVenta.setBackground(new java.awt.Color(255, 51, 51));
+        btnRealizarVenta.setBackground(new java.awt.Color(204, 0, 51));
         btnRealizarVenta.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         btnRealizarVenta.setText("Realizar Venta");
         btnRealizarVenta.addActionListener(new java.awt.event.ActionListener() {
@@ -298,7 +309,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel10.setText("Pago con: ");
 
         txtPagoCon.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        txtPagoCon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtPagoConKeyReleased(evt);
+            }
+        });
 
+        txtRecibe.setEditable(false);
         txtRecibe.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -486,7 +503,7 @@ public class Principal extends javax.swing.JFrame {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     cargarModeloTablaInventario();
-                    limpiarCampos();
+                    limpiarTabInventario();
                 }
 
             });
@@ -503,7 +520,7 @@ public class Principal extends javax.swing.JFrame {
 
                 base.eliminarProducto(selectedId);
                 JOptionPane.showMessageDialog(this, "Eliminacion exitosa", "Confirmado", JOptionPane.INFORMATION_MESSAGE);
-                limpiarCampos();
+                limpiarTabInventario();
                 cargarModeloTablaInventario();
 
             } else {
@@ -525,7 +542,7 @@ public class Principal extends javax.swing.JFrame {
 
                     JOptionPane.showMessageDialog(this, "Existencias actualizadas", "Exitoso", JOptionPane.INFORMATION_MESSAGE);
                     mostrarInfoProducto(selectedId);
-                    limpiarCampos();
+                    limpiarTabInventario();
                     cargarModeloTablaInventario();
 
                 } catch (NumberFormatException ex) {
@@ -567,6 +584,7 @@ public class Principal extends javax.swing.JFrame {
         double cant = 0D;
         double precioVenta = 0D;
         if (!(evt.getValueIsAdjusting()) && ListProductos.getSelectedIndex() != -1) {
+            cargarFoto(ListProductos.getSelectedValue().getIdProducto());
             //Obtenemos el indice que corresponde al objeto seleccionado en la lista
             int indexRow = tableContainsProduct(ListProductos.getSelectedValue().getIdProducto());
 
@@ -626,6 +644,7 @@ public class Principal extends javax.swing.JFrame {
             modeloTablaVentas.removeRow(filaSeleccionada);
             //Quitamos la seleccion
             tblVentas.clearSelection();
+            lblFotoProducto.setIcon(null);
         } else {
             JOptionPane.showMessageDialog(null, "No se selecciono ninguna fila", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -635,7 +654,7 @@ public class Principal extends javax.swing.JFrame {
 
         if (tblVentas.getRowCount() > 0) {
             //Limpiar la tabla a traves del modelo
-            modeloTablaVentas.setRowCount(0);
+            limpiarTabVentas();
         } else {
             JOptionPane.showMessageDialog(null, "No hay productos en la venta", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -662,20 +681,40 @@ public class Principal extends javax.swing.JFrame {
 
                 String idProducto = (String) tblVentas.getValueAt(fila, 0);
                 double cantidadVendida = (Double) tblVentas.getValueAt(fila, 3);
-                
+
                 VentaProductos ventaProductos = new VentaProductos(idUltimaVenta, idProducto, cantidadVendida);
                 base.insertarVentaProductos(ventaProductos);
             }
-            modeloTablaVentas.setRowCount(0);
-            modeloLista.clear();
-            txtBuscarProductoVenta.setText("");
-            
+
+            limpiarTabVentas();
+
         } else {
             JOptionPane.showMessageDialog(null, "No hay productos agregados", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
 
     }//GEN-LAST:event_btnRealizarVentaActionPerformed
+
+    private void txtPagoConKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagoConKeyReleased
+        if (!txtPagoCon.getText().isBlank() && actualizarMonto() > 0) {
+            try {
+                double pagoCon = Double.parseDouble(txtPagoCon.getText());
+                double montoTotal = actualizarMonto();
+                double cambio = pagoCon - montoTotal;
+                if (cambio < 0) {
+                    txtRecibe.setForeground(Color.red);
+                } else if (cambio == 0) {
+                    txtRecibe.setForeground(Color.BLACK);
+                } else {
+                    txtRecibe.setForeground(new Color(0, 102, 0));
+                }
+                txtRecibe.setText(String.valueOf(cambio));
+
+            } catch (NumberFormatException ex) {
+                Toolkit.getDefaultToolkit().beep();
+            }
+        }
+    }//GEN-LAST:event_txtPagoConKeyReleased
 
     public static void main(String args[]) {
 
@@ -782,6 +821,32 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 
+    private void addListSelectionListenerTblVentas() {
+        tblVentas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting() && tblVentas.getSelectedRow() != -1) {
+                    int indiceFilaSeleccionada = tblVentas.getSelectedRow();
+                    String idProducto = (String)modeloTablaVentas.getValueAt(indiceFilaSeleccionada, 0);
+                    cargarFoto(idProducto);
+                }
+            }
+        });
+    }
+
+    private void cargarFoto(String id) {
+        try {
+            Producto selectedProduct = base.obtenerProducto(id);
+            //Obtener foto
+            InputStream inputStream = base.buscarFoto(selectedProduct);
+            BufferedImage bufferedImage = ImageIO.read(inputStream);
+            ImageIcon imageIcon = new ImageIcon(bufferedImage);
+            lblFotoProducto.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(lblFotoProducto.getWidth(), lblFotoProducto.getHeight(), Image.SCALE_DEFAULT)));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     private void mostrarInfoProducto(String selectedId) {
         Producto producto = base.obtenerProducto(selectedId);
         txtClaveProducto.setText(producto.getIdProducto());
@@ -789,7 +854,7 @@ public class Principal extends javax.swing.JFrame {
         txtExistencia.setText(String.valueOf(producto.getExistenciasProducto()));
     }
 
-    private void limpiarCampos() {
+    private void limpiarTabInventario() {
         txtClaveProducto.setText("");
         txtNombreProducto.setText("");
         txtExistencia.setText("");
@@ -836,8 +901,19 @@ public class Principal extends javax.swing.JFrame {
             public void tableChanged(TableModelEvent e) {
                 //Actualizar el monto
                 actualizarMonto();
+                txtPagoCon.setText("");
+                txtRecibe.setText("");
             }
         });
+    }
+
+    private void limpiarTabVentas() {
+        modeloTablaVentas.setRowCount(0);
+        modeloLista.clear();
+        txtBuscarProductoVenta.setText("");
+        txtPagoCon.setText("");
+        txtRecibe.setText("");
+        lblFotoProducto.setIcon(null);
     }
 
 }

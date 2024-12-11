@@ -19,6 +19,7 @@ datos\BaseDatos.class
 gui\EditarProductosDialog.class
 gui\ProductosDialog$3.class
 gui\Principal$14.class
+gui\Principal$20.class
 logica\Producto.class
 gui\CategoriasDialog.class
 gui\Principal$11.class
@@ -49,5 +50,6 @@ gui\CategoriasDialog$1.class
 gui\EditarProductosDialog$1.class
 gui\Principal$2.class
 gui\ProveedoresDialog$3.class
+gui\Principal$21.class
 gui\ProductosDialog$1.class
 enums\UnidadDeMedida.class
