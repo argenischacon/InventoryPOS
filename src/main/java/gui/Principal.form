@@ -75,7 +75,7 @@
                                           <Group type="102" alignment="0" attributes="0">
                                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                                   <Component id="jLabel3" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="btnArticulos" alignment="0" pref="80" max="32767" attributes="0"/>
+                                                  <Component id="btnProductos" alignment="0" min="-2" pref="80" max="-2" attributes="0"/>
                                               </Group>
                                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                               <Component id="btnCategorias" min="-2" pref="80" max="-2" attributes="0"/>
@@ -103,7 +103,7 @@
                                           <Component id="jLabel6" alignment="0" min="-2" pref="124" max="-2" attributes="0"/>
                                           <Component id="txtExistencia" alignment="0" min="-2" pref="248" max="-2" attributes="0"/>
                                       </Group>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <EmptySpace pref="283" max="32767" attributes="0"/>
                                       <Component id="lblFotoProdInventario" min="-2" pref="262" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jScrollPane1" pref="1058" max="32767" attributes="0"/>
@@ -124,7 +124,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnArticulos" alignment="3" min="-2" pref="80" max="-2" attributes="0"/>
+                          <Component id="btnProductos" alignment="3" min="-2" pref="80" max="-2" attributes="0"/>
                           <Component id="btnProveedores" alignment="3" min="-2" pref="80" max="-2" attributes="0"/>
                           <Component id="btnCategorias" alignment="3" min="-2" pref="80" max="-2" attributes="0"/>
                       </Group>
@@ -177,17 +177,23 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="btnArticulos">
+            <Component class="javax.swing.JButton" name="btnProductos">
               <Properties>
                 <Property name="toolTipText" type="java.lang.String" value="Agregar articulos"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[80, 80]"/>
+                </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnArticulosActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProductosActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JButton" name="btnCategorias">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Agregar o eliminar categorias"/>
+                <Property name="toolTipText" type="java.lang.String" value="Agregar Categoria"/>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[80, 80]"/>
+                </Property>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCategoriasActionPerformed"/>
@@ -195,7 +201,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnProveedores">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Agregar o eliminar proveedores"/>
+                <Property name="toolTipText" type="java.lang.String" value="Agregar proveedor"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnProveedoresActionPerformed"/>
@@ -268,7 +274,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnEditarArticulo">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Editar articulo"/>
+                <Property name="toolTipText" type="java.lang.String" value="Editar producto"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEditarArticuloActionPerformed"/>
@@ -276,7 +282,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnEliminarArticulo">
               <Properties>
-                <Property name="toolTipText" type="java.lang.String" value="Eliminar articulo"/>
+                <Property name="toolTipText" type="java.lang.String" value="Eliminar Producto"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnEliminarArticuloActionPerformed"/>
@@ -320,16 +326,17 @@
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="jScrollPane2" min="-2" pref="802" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="btnQuitarProducto" min="-2" pref="134" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
-                                      <Component id="btnCancelarVenta" min="-2" pref="134" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="251" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <EmptySpace min="-2" pref="170" max="-2" attributes="0"/>
+                                      <Component id="btnQuitarProducto" min="-2" pref="165" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="btnCancelarVenta" min="-2" pref="165" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="220" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                               <Component id="jPanel1" max="32767" attributes="0"/>
@@ -551,6 +558,9 @@
             </Container>
             <Component class="javax.swing.JButton" name="btnCancelarVenta">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\resources\cancelar_venta.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Cancelar Venta"/>
               </Properties>
               <Events>
@@ -568,6 +578,9 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnQuitarProducto">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="2" name="C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\resources\quitar_producto.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Quitar Producto"/>
               </Properties>
               <Events>

@@ -3,7 +3,7 @@
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
-    <Property name="title" type="java.lang.String" value="Articulos"/>
+    <Property name="title" type="java.lang.String" value="Productos"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -277,6 +277,11 @@
         <Component class="javax.swing.JTextField" name="txtPrecioVenta">
         </Component>
         <Component class="javax.swing.JButton" name="btnGestionarCategorias">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\resources\a&#xf1;adir.png"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGestionarCategoriasActionPerformed"/>
           </Events>
@@ -308,6 +313,11 @@
           </AuxValues>
         </Component>
         <Component class="javax.swing.JButton" name="btnGestionarProveedores">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="2" name="C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\resources\a&#xf1;adir.png"/>
+            </Property>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGestionarProveedoresActionPerformed"/>
           </Events>
