@@ -161,7 +161,7 @@ public class BaseDatos {
         try {
             conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
 
-            String sql = "INSERT INTO venta_productos (id_venta, id_prod, cantidad_vendida) "
+            String sql = "INSERT INTO ventas_productos (id_venta, id_prod, cantidad_vendida) "
                     + "VALUES (?,?,?)";
 
             st = conn.prepareStatement(sql);
@@ -523,6 +523,33 @@ public class BaseDatos {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public int obtenerUltimaVenta() {
+        int ultimaVenta = 0;
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+
+            String sql = "SELECT id_venta FROM ventas ORDER BY id_venta DESC LIMIT 1";
+            st = conn.prepareStatement(sql);
+
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                ultimaVenta = rs.getInt("id_venta");
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                st.close();
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return ultimaVenta;
     }
 
 }

@@ -18,6 +18,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import logica.Producto;
 import logica.Venta;
+import logica.VentaProductos;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -652,8 +653,24 @@ public class Principal extends javax.swing.JFrame {
             //Persistir en la base de datos
             base.insertarVenta(venta);
             JOptionPane.showMessageDialog(null, "Venta exitosa", "Listo", JOptionPane.INFORMATION_MESSAGE);
+
+            //VentaProducto
+            //Obtener ultima venta
+            int idUltimaVenta = base.obtenerUltimaVenta();
+
+            for (int fila = 0; fila < tblVentas.getRowCount(); fila++) {
+
+                String idProducto = (String) tblVentas.getValueAt(fila, 0);
+                double cantidadVendida = (Double) tblVentas.getValueAt(fila, 3);
+                
+                VentaProductos ventaProductos = new VentaProductos(idUltimaVenta, idProducto, cantidadVendida);
+                base.insertarVentaProductos(ventaProductos);
+            }
+            modeloTablaVentas.setRowCount(0);
+            modeloLista.clear();
+            txtBuscarProductoVenta.setText("");
             
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No hay productos agregados", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
