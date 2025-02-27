@@ -766,6 +766,8 @@ public class Principal extends javax.swing.JFrame {
             public void run() {
                 Principal principal = new Principal();
                 principal.setVisible(true);
+                ImageIcon icono = new ImageIcon(getClass().getResource("/ventas_1.png"));
+                principal.setIconImage(icono.getImage());
                 ProductosDialog.FRAMEPADRE = principal;
             }
         });
