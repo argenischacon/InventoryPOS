@@ -1,9 +1,17 @@
 package gui;
 
+import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
+import com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import datos.BaseDatos;
+import dto.ReporteVentaProductoDTO;
 import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -13,14 +21,19 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -29,16 +42,23 @@ import javax.swing.table.DefaultTableModel;
 import logica.Producto;
 import logica.Venta;
 import logica.VentaProductos;
+import net.miginfocom.swing.MigLayout;
+import raven.datetime.DatePicker;
+import raven.datetime.DateSelectionAble;
+import raven.datetime.event.DateSelectionEvent;
+import raven.datetime.event.DateSelectionListener;
 
 public class Principal extends javax.swing.JFrame {
 
-    private ImageIcon iconTabInventario, iconTabVentas, iconProductos, iconCategorias, iconProveedores;
-    private ImageIcon iconEliminarProd, iconEditarProd;
-    private DefaultTableModel modeloTablaInventario;
-    private DefaultTableModel modeloTablaVentas;
+    private ImageIcon iconTabInventario, iconTabVentas, iconProductos, iconCategorias, iconProveedores,
+            iconReportes;
+    private JButton btnPdf;
+    private ImageIcon iconEliminarProd, iconEditarProd, iconPdf;
+    private DefaultTableModel modeloTablaInventario, modeloTablaVentas, modeloTablaReportes;
     private DefaultListModel<Producto> modeloLista;
     private BaseDatos base;
     private String selectedId;
+    private DatePicker dp;
 
     public Principal() {
         base = new BaseDatos();
@@ -49,16 +69,31 @@ public class Principal extends javax.swing.JFrame {
             }
 
         };
-        modeloTablaInventario = new DefaultTableModel();
+        modeloTablaInventario = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+
+        };
+        modeloTablaReportes = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         modeloLista = new DefaultListModel<>();
 
         modeloTablaVentas.setColumnIdentifiers(new Object[]{"clave", "nombre", "precio", "cantidad", "importe"});
         modeloTablaInventario.setColumnIdentifiers(new Object[]{"clave", "nombre", "descripcion", "unidad",
             "precio_compra", "precio_venta", "existencias"});
+        modeloTablaReportes.setColumnIdentifiers(new Object[]{"id_venta", "nom_prod", "cantidad_vendida", "precio",
+            "monto_total_venta", "fecha"});
 
         cargarModeloTablaInventario();
-        iconEliminarProd = new ImageIcon(getClass().getResource("/eliminar.png"));
+        cargarModeloTablaReportes(LocalDate.now().toString(), LocalDate.now().toString());
         initComponents();
+        cargarDateChooser();
         addListSelectionListenerTblVentas();
         addListSelectionListenerTblProd();
         addTableModelListenerModelTblVentas();
@@ -111,6 +146,10 @@ public class Principal extends javax.swing.JFrame {
         btnQuitarProducto = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         ListProductos = new javax.swing.JList<>();
+        panelReportes = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        panelDateChooser = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de ventas e inventario");
@@ -469,6 +508,43 @@ public class Principal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Ventas", null, panelVentas, "");
 
+        jTable1.setModel(modeloTablaReportes);
+        jScrollPane4.setViewportView(jTable1);
+
+        javax.swing.GroupLayout panelDateChooserLayout = new javax.swing.GroupLayout(panelDateChooser);
+        panelDateChooser.setLayout(panelDateChooserLayout);
+        panelDateChooserLayout.setHorizontalGroup(
+            panelDateChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelDateChooserLayout.setVerticalGroup(
+            panelDateChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 106, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout panelReportesLayout = new javax.swing.GroupLayout(panelReportes);
+        panelReportes.setLayout(panelReportesLayout);
+        panelReportesLayout.setHorizontalGroup(
+            panelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelReportesLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addGroup(panelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1067, Short.MAX_VALUE)
+                    .addComponent(panelDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(74, Short.MAX_VALUE))
+        );
+        panelReportesLayout.setVerticalGroup(
+            panelReportesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelReportesLayout.createSequentialGroup()
+                .addContainerGap(16, Short.MAX_VALUE)
+                .addComponent(panelDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(116, 116, 116))
+        );
+
+        jTabbedPane1.addTab("Reportes", panelReportes);
+
         jTabbedPane1.setToolTipTextAt(0, "Gestionar el inventario de productos");
         jTabbedPane1.setToolTipTextAt(1, "Realizar ventas");
 
@@ -555,6 +631,11 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarArticuloActionPerformed
 
+    private void btnPdfActionPerformed(java.awt.event.ActionEvent evt){
+        
+        
+        
+    }
     private void btnAgregarExistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarExistenciaActionPerformed
         if (tblProductos.getSelectedRow() != -1) {
 
@@ -743,7 +824,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPagoConKeyReleased
 
     public static void main(String args[]) {
-
+        /*
         try {
 
             //javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
@@ -760,6 +841,9 @@ public class Principal extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+         */
+
+        FlatMonokaiProIJTheme.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -798,12 +882,16 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblFotoProdInventario;
     private javax.swing.JLabel lblFotoProdVentas;
     private javax.swing.JLabel lblMontoTotal;
+    private javax.swing.JPanel panelDateChooser;
     private javax.swing.JPanel panelInventario;
+    private javax.swing.JPanel panelReportes;
     private javax.swing.JPanel panelVentas;
     private javax.swing.JTable tblProductos;
     private javax.swing.JTable tblVentas;
@@ -825,8 +913,11 @@ public class Principal extends javax.swing.JFrame {
         iconProveedores = new ImageIcon(getClass().getResource("/proveedor.png"));
         iconEliminarProd = new ImageIcon(getClass().getResource("/eliminar.png"));
         iconEditarProd = new ImageIcon(getClass().getResource("/editar.png"));
+        iconReportes = new ImageIcon(getClass().getResource("/reportes.png"));
+        iconPdf = new ImageIcon(getClass().getResource("/pdf_small.png"));
 
         // Íconos para pestañas
+        jTabbedPane1.setIconAt(2, iconReportes);
         jTabbedPane1.setIconAt(1, iconTabVentas);
         jTabbedPane1.setIconAt(0, iconTabInventario);
 
@@ -836,6 +927,7 @@ public class Principal extends javax.swing.JFrame {
         setButtonIcon(btnProveedores, iconProveedores, 10);
         setButtonIcon(btnEliminarArticulo, iconEliminarProd, 10);
         setButtonIcon(btnEditarArticulo, iconEditarProd, 15);
+        setButtonIcon(btnPdf, iconPdf, 1);
     }
 
     private void cargarModeloTablaInventario() {
@@ -847,6 +939,37 @@ public class Principal extends javax.swing.JFrame {
             modeloTablaInventario.addRow(filaInserccion);
         }
 
+    }
+
+    private void cargarModeloTablaReportes(String fechaInicial, String fechaFinal) {
+        modeloTablaReportes.setRowCount(0);
+
+        List<ReporteVentaProductoDTO> list = base.obtenerReporteVentaProducto(fechaInicial, fechaFinal);
+        if (!list.isEmpty()) {
+        Object[] row = new Object[6];
+        int id_venta = list.get(0).getId_venta();
+            for (ReporteVentaProductoDTO obj : list) {
+                if (obj.getId_venta() != id_venta) {
+                    row[0] = "";
+                    row[1] = "";
+                    row[2] = "";
+                    row[3] = "";
+                    row[4] = "";
+                    row[5] = "";
+                    modeloTablaReportes.addRow(row);
+                    id_venta = obj.getId_venta();
+
+                }
+                row[0] = obj.getId_venta();
+                row[1] = obj.getNombreProducto();
+                row[2] = obj.getCantidadVendida();
+                row[3] = obj.getPrecioVentaProducto();
+                row[4] = obj.getMontoVenta();
+                row[5] = obj.getFechaVenta();
+                modeloTablaReportes.addRow(row);
+
+            }
+        }
     }
 
     private void addListSelectionListenerTblProd() {
@@ -979,6 +1102,39 @@ public class Principal extends javax.swing.JFrame {
         int height = boton.getHeight() - padding;
 
         boton.setIcon(new ImageIcon(icono.getImage().getScaledInstance(width, height, 4)));
+    }
+
+    private void cargarDateChooser() {
+        dp = new DatePicker();
+        JFormattedTextField editor = new JFormattedTextField();
+        dp.setEditor(editor);
+        dp.setDateSelectionMode(DatePicker.DateSelectionMode.BETWEEN_DATE_SELECTED);
+        dp.setUsePanelOption(true);
+        dp.addDateSelectionListener(new DateSelectionListener() {
+            @Override
+            public void dateSelected(DateSelectionEvent dse) {
+                
+                LocalDate[] dates = dp.getSelectedDateRange();
+                if (dates != null) {
+                    cargarModeloTablaReportes(dates[0].toString(), dates[1].toString());
+                }
+            }
+        });
+        dp.setSelectedDateRange(LocalDate.now(), LocalDate.now());
+        panelDateChooser.setLayout(new MigLayout());
+        
+        JLabel lblDatePicker = new JLabel("Escoge el rango de fechas ");
+        lblDatePicker.setFont(new Font("Segoe UI", Font.PLAIN, 18));
+        panelDateChooser.add(lblDatePicker, "wrap");
+        panelDateChooser.add(editor, "width 250");
+        btnPdf = new JButton("Generar PDF");
+        btnPdf.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnPdfActionPerformed(e);
+            }
+        });
+        panelDateChooser.add(btnPdf);
     }
 
 }

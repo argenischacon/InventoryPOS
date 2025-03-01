@@ -1,6 +1,7 @@
 gui\Principal$13.class
 gui\ProductosDialog$2.class
 interfaces\CategoriaAddedListener.class
+gui\Principal$23.class
 gui\Principal$6.class
 logica\VentaProductos.class
 gui\Principal$9.class
@@ -42,10 +43,13 @@ gui\ProveedoresDialog$2.class
 gui\ProductosDialog.class
 gui\EditarProductosDialog$5$1.class
 gui\Principal$12.class
+gui\Principal$22.class
 logica\Venta.class
 gui\Principal$5.class
 gui\Principal$19.class
+dto\ReporteVentaProductoDTO.class
 gui\EditarProductosDialog$5.class
+gui\Principal$24.class
 gui\ProveedoresDialog.class
 gui\ProductosDialog$8.class
 gui\Principal$16.class

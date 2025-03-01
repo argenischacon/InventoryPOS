@@ -1,16 +1,19 @@
 package datos;
 
+import dto.ReporteVentaProductoDTO;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
 import logica.Categoria;
 import logica.Producto;
 import logica.Proveedor;
@@ -551,5 +554,54 @@ public class BaseDatos {
         }
         return ultimaVenta;
     }
+
+    public List<ReporteVentaProductoDTO> obtenerReporteVentaProducto(String fechaInicial, String fechaFinal) {
+        List<ReporteVentaProductoDTO> reporteVentaProducto = new ArrayList<>();
+        try {
+            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            String sql = "SELECT v.id_venta, p.nom_prod, vp.cantidad_vendida, p.precio_venta_prod, v.monto_venta, v.fecha_venta "
+                    + "FROM ventas v "
+                    + "INNER JOIN ventas_productos vp "
+                    + "ON v.id_venta = vp.id_venta "
+                    + "INNER JOIN productos p "
+                    + "ON p.id_prod = vp.id_prod "
+                    + "WHERE v.fecha_venta >= ? "
+                    + "AND v.fecha_venta <= ? "
+                    + "ORDER BY v.id_venta";
+            
+            st = conn.prepareStatement(sql);
+            
+            LocalDate fechaI = LocalDate.parse(fechaInicial);
+            LocalDate fechaF = LocalDate.parse(fechaFinal);
+            
+            
+            st.setDate(1, Date.valueOf(fechaI));
+            st.setDate(2, Date.valueOf(fechaF));
+            rs = st.executeQuery();
+            
+            while(rs.next()){
+                ReporteVentaProductoDTO dto = new ReporteVentaProductoDTO();
+                dto.setId_venta(rs.getInt(1));
+                dto.setNombreProducto(rs.getString(2));
+                dto.setCantidadVendida(rs.getDouble(3));
+                dto.setPrecioVentaProducto(rs.getDouble(4));
+                dto.setMontoVenta(rs.getDouble(5));
+                dto.setFechaVenta(rs.getDate(6));
+                reporteVentaProducto.add(dto);
+            }
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }finally{
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+       return reporteVentaProducto;
+    }
+
+
 
 }
