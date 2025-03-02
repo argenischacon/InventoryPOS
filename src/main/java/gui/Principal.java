@@ -2,6 +2,7 @@ package gui;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
 import com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme;
+import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatNightOwlIJTheme;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import datos.BaseDatos;
 import dto.ReporteVentaProductoDTO;
@@ -47,6 +48,7 @@ import raven.datetime.DatePicker;
 import raven.datetime.DateSelectionAble;
 import raven.datetime.event.DateSelectionEvent;
 import raven.datetime.event.DateSelectionListener;
+import reports.ReportGenerator;
 
 public class Principal extends javax.swing.JFrame {
 
@@ -632,9 +634,8 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarArticuloActionPerformed
 
     private void btnPdfActionPerformed(java.awt.event.ActionEvent evt){
-        
-        
-        
+        LocalDate [] dates = dp.getSelectedDateRange();
+        new ReportGenerator().generarReporte(dates[0], dates[1]);
     }
     private void btnAgregarExistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarExistenciaActionPerformed
         if (tblProductos.getSelectedRow() != -1) {
@@ -843,7 +844,8 @@ public class Principal extends javax.swing.JFrame {
         //</editor-fold>
          */
 
-        FlatMonokaiProIJTheme.setup();
+        //FlatMonokaiProIJTheme.setup();
+        FlatNightOwlIJTheme.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

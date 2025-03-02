@@ -39,7 +39,7 @@ public class BaseDatos {
     public void insertarProducto(Producto producto) {
 
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
             FileInputStream fis = new FileInputStream(producto.getFotoProducto());
 
             st = conn.prepareStatement("INSERT INTO productos (id_prod, nom_prod, desc_prod, stock_prod, "
@@ -78,7 +78,7 @@ public class BaseDatos {
     public void insertarCategoriaProducto(Categoria categoria) {
 
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "INSERT INTO categorias (nom_categoria_prod, desc_categoria_prod)"
                     + "VALUES (?,?)";
@@ -104,7 +104,7 @@ public class BaseDatos {
     public void insertarProveedor(Proveedor proveedor) {
 
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "INSERT INTO proveedores (nom_proveedor, dir_proveedor, "
                     + "telefono_proveedor, email_proveedor, contacto_proveedor)"
@@ -135,7 +135,7 @@ public class BaseDatos {
 
     public void insertarVenta(Venta venta) {
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "INSERT INTO ventas (monto_venta, fecha_venta) "
                     + "VALUES (?,?)";
@@ -162,7 +162,7 @@ public class BaseDatos {
     public void insertarVentaProductos(VentaProductos ventaProductos) {
 
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "INSERT INTO ventas_productos (id_venta, id_prod, cantidad_vendida) "
                     + "VALUES (?,?,?)";
@@ -192,7 +192,7 @@ public class BaseDatos {
 
         ArrayList<Producto> productos = new ArrayList<>();
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "SELECT * FROM productos ORDER BY id_prod ASC";
 
@@ -234,7 +234,7 @@ public class BaseDatos {
         ArrayList<Categoria> categorias = new ArrayList<>();
 
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "SELECT * FROM categorias";
 
@@ -268,7 +268,7 @@ public class BaseDatos {
 
         ArrayList<Proveedor> proveedores = new ArrayList<>();
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "SELECT * FROM proveedores";
 
@@ -303,7 +303,7 @@ public class BaseDatos {
     public Producto obtenerProducto(String selectedId) {
         Producto producto = new Producto();
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
             String sql = "SELECT * FROM productos WHERE id_prod = ?";
 
             st = conn.prepareStatement(sql);
@@ -340,7 +340,7 @@ public class BaseDatos {
 
     public void actualizarInventario(String selectedId, double nuevaCantidad) {
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "UPDATE productos SET existencias_prod = ? WHERE id_prod = ?";
             st = conn.prepareStatement(sql);
@@ -364,7 +364,7 @@ public class BaseDatos {
     public ArrayList<Producto> obtenerProductosPorCriterio(String criterio) {
         ArrayList<Producto> productos = new ArrayList<>();
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "SELECT * FROM productos WHERE id_prod ILIKE '%" + criterio + "%'"
                     + " OR nom_prod ILIKE '%" + criterio + "%' ORDER BY id_prod ASC";
@@ -406,7 +406,7 @@ public class BaseDatos {
 
     public void eliminarProducto(String selectedId) {
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "DELETE FROM productos WHERE id_prod = '" + selectedId + "'";
             st = conn.prepareStatement(sql);
@@ -429,7 +429,7 @@ public class BaseDatos {
     public InputStream buscarFoto(Producto selectedProduct) {
         InputStream is = null;
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "SELECT foto_prod FROM productos WHERE id_prod = '" + selectedProduct.getIdProducto() + "'";
             st = conn.prepareStatement(sql);
@@ -455,7 +455,7 @@ public class BaseDatos {
 
     public void actualizarProducto(Producto producto) {
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
             String sql = "";
             if (producto.getFotoProducto() != null) { //Si se selecciono una imagen para el producto
                 sql = "UPDATE productos "
@@ -531,7 +531,7 @@ public class BaseDatos {
     public int obtenerUltimaVenta() {
         int ultimaVenta = 0;
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
 
             String sql = "SELECT id_venta FROM ventas ORDER BY id_venta DESC LIMIT 1";
             st = conn.prepareStatement(sql);
@@ -558,7 +558,7 @@ public class BaseDatos {
     public List<ReporteVentaProductoDTO> obtenerReporteVentaProducto(String fechaInicial, String fechaFinal) {
         List<ReporteVentaProductoDTO> reporteVentaProducto = new ArrayList<>();
         try {
-            conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/sistema", "postgres", "123");
+            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
             String sql = "SELECT v.id_venta, p.nom_prod, vp.cantidad_vendida, p.precio_venta_prod, v.monto_venta, v.fecha_venta "
                     + "FROM ventas v "
                     + "INNER JOIN ventas_productos vp "

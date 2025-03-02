@@ -18,6 +18,7 @@ gui\ProveedoresDialog$1.class
 gui\CategoriasDialog$3$1.class
 gui\EditarProductosDialog$3.class
 logica\Categoria.class
+reports\ReportGenerator.class
 datos\BaseDatos.class
 gui\EditarProductosDialog.class
 gui\ProductosDialog$3.class
@@ -39,6 +40,7 @@ gui\ProductosDialog$4.class
 gui\Principal$1.class
 gui\Principal$8.class
 gui\Principal$15.class
+gui\Principal$25.class
 gui\ProveedoresDialog$2.class
 gui\ProductosDialog.class
 gui\EditarProductosDialog$5$1.class
