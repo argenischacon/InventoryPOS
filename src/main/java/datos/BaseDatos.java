@@ -1,17 +1,17 @@
 package datos;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import dto.ReporteVentaProductoDTO;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import logica.Categoria;
@@ -22,9 +22,10 @@ import logica.VentaProductos;
 
 public class BaseDatos {
 
-    Connection conn = null;
-    PreparedStatement st = null;
-    ResultSet rs = null;
+    //Connection conn = null;
+    //PreparedStatement st = null;
+    //ResultSet rs = null;
+    private static final HikariDataSource dataSource;
 
     public BaseDatos() {
         try {
@@ -35,14 +36,35 @@ public class BaseDatos {
             ex.printStackTrace();
         }
     }
+    
+    static{
+       HikariConfig config = new HikariConfig();
+       config.setJdbcUrl("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema");
+       config.setUsername("postgres");
+       config.setPassword("YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+       config.setMaximumPoolSize(10);
+       config.setMinimumIdle(2);
+       config.setIdleTimeout(30000);
+       config.setConnectionTimeout(30000);
+       config.setLeakDetectionThreshold(60000);
+       
+        dataSource = new HikariDataSource(config);
+    }
+    
+    public static Connection getConnection() throws SQLException{
+        return dataSource.getConnection();
+    }
+    
+    public static void cerrarPool(){
+        dataSource.close();
+    }
 
     public void insertarProducto(Producto producto) {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try(Connection conn = BaseDatos.getConnection()) {
             FileInputStream fis = new FileInputStream(producto.getFotoProducto());
 
-            st = conn.prepareStatement("INSERT INTO productos (id_prod, nom_prod, desc_prod, stock_prod, "
+            PreparedStatement st = conn.prepareStatement("INSERT INTO productos (id_prod, nom_prod, desc_prod, stock_prod, "
                     + "foto_prod, unidad_prod, precio_compra_prod, precio_venta_prod, existencias_prod, "
                     + "id_categoria_prod, id_proveedor) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
@@ -64,25 +86,16 @@ public class BaseDatos {
             ex.printStackTrace();
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
 
     }
 
     public void insertarCategoriaProducto(Categoria categoria) {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
-
+        try (Connection conn = BaseDatos.getConnection()) {
             String sql = "INSERT INTO categorias (nom_categoria_prod, desc_categoria_prod)"
                     + "VALUES (?,?)";
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, categoria.getNombreCategoria());
             st.setString(2, categoria.getDescripcionCategoria());
 
@@ -90,27 +103,19 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
 
     }
 
     public void insertarProveedor(Proveedor proveedor) {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "INSERT INTO proveedores (nom_proveedor, dir_proveedor, "
                     + "telefono_proveedor, email_proveedor, contacto_proveedor)"
                     + "VALUES (?,?,?,?,?)";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
             st.setString(1, proveedor.getNombreProveedor());
             st.setString(2, proveedor.getDireccionProveedor());
@@ -122,25 +127,17 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                st.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
 
     }
 
     public void insertarVenta(Venta venta) {
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "INSERT INTO ventas (monto_venta, fecha_venta) "
                     + "VALUES (?,?)";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
             st.setDouble(1, venta.getMontoVenta());
             st.setDate(2, venta.getFechaVenta());
@@ -149,25 +146,17 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                st.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
     }
 
     public void insertarVentaProductos(VentaProductos ventaProductos) {
 
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "INSERT INTO ventas_productos (id_venta, id_prod, cantidad_vendida) "
                     + "VALUES (?,?,?)";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
             st.setInt(1, ventaProductos.getVenta());
             st.setString(2, ventaProductos.getProducto());
@@ -177,28 +166,19 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                st.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-
+        } 
     }
 
     public ArrayList<Producto> obtenerProductos() {
 
         ArrayList<Producto> productos = new ArrayList<>();
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
-
+        try (Connection conn = BaseDatos.getConnection()) {
+            
             String sql = "SELECT * FROM productos ORDER BY id_prod ASC";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 Producto producto = new Producto();
@@ -218,14 +198,7 @@ public class BaseDatos {
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                st.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
         return productos;
     }
 
@@ -233,14 +206,13 @@ public class BaseDatos {
 
         ArrayList<Categoria> categorias = new ArrayList<>();
 
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "SELECT * FROM categorias";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 Categoria categoria = new Categoria();
@@ -252,14 +224,7 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                st.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
 
         return categorias;
     }
@@ -267,14 +232,13 @@ public class BaseDatos {
     public ArrayList<Proveedor> obtenerProveedores() {
 
         ArrayList<Proveedor> proveedores = new ArrayList<>();
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "SELECT * FROM proveedores";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 Proveedor proveedor = new Proveedor();
@@ -289,27 +253,20 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                st.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
         return proveedores;
     }
 
     public Producto obtenerProducto(String selectedId) {
         Producto producto = new Producto();
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
+            
             String sql = "SELECT * FROM productos WHERE id_prod = ?";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
             st.setString(1, selectedId);
 
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 producto.setIdProducto(rs.getString(1));
@@ -327,23 +284,16 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-                st.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
+        
         return producto;
     }
 
     public void actualizarInventario(String selectedId, double nuevaCantidad) {
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "UPDATE productos SET existencias_prod = ? WHERE id_prod = ?";
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
             st.setDouble(1, nuevaCantidad);
             st.setString(2, selectedId);
 
@@ -351,27 +301,19 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
     }
 
     public ArrayList<Producto> obtenerProductosPorCriterio(String criterio) {
         ArrayList<Producto> productos = new ArrayList<>();
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "SELECT * FROM productos WHERE id_prod ILIKE '%" + criterio + "%'"
                     + " OR nom_prod ILIKE '%" + criterio + "%' ORDER BY id_prod ASC";
 
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 Producto producto = new Producto();
@@ -392,49 +334,35 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
 
         return productos;
     }
 
     public void eliminarProducto(String selectedId) {
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
+            
 
             String sql = "DELETE FROM productos WHERE id_prod = '" + selectedId + "'";
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
             st.executeUpdate();
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
 
     }
 
     public InputStream buscarFoto(Producto selectedProduct) {
         InputStream is = null;
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
+            
 
             String sql = "SELECT foto_prod FROM productos WHERE id_prod = '" + selectedProduct.getIdProducto() + "'";
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 is = rs.getBinaryStream("foto_prod");
@@ -442,21 +370,15 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
         return is;
     }
 
     public void actualizarProducto(Producto producto) {
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
+            
             String sql = "";
+            PreparedStatement st;
             if (producto.getFotoProducto() != null) { //Si se selecciono una imagen para el producto
                 sql = "UPDATE productos "
                         + "SET id_prod = ?, "
@@ -516,27 +438,20 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } catch (FileNotFoundException ex) {
+        } catch(FileNotFoundException ex){
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
+        
     }
 
     public int obtenerUltimaVenta() {
         int ultimaVenta = 0;
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
 
             String sql = "SELECT id_venta FROM ventas ORDER BY id_venta DESC LIMIT 1";
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
 
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
 
             while (rs.next()) {
                 ultimaVenta = rs.getInt("id_venta");
@@ -544,21 +459,16 @@ public class BaseDatos {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try {
-                st.close();
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
+        } 
+        
         return ultimaVenta;
     }
 
     public List<ReporteVentaProductoDTO> obtenerReporteVentaProducto(String fechaInicial, String fechaFinal) {
+        
         List<ReporteVentaProductoDTO> reporteVentaProducto = new ArrayList<>();
-        try {
-            conn = DriverManager.getConnection("jdbc:postgresql://turntable.proxy.rlwy.net:33514/sistema", "postgres", "YvgaagmRtyLoigkFmdEvoeuSMjDwIyjX");
+        try (Connection conn = BaseDatos.getConnection()) {
+            
             String sql = "SELECT v.id_venta, p.nom_prod, vp.cantidad_vendida, p.precio_venta_prod, v.monto_venta, v.fecha_venta "
                     + "FROM ventas v "
                     + "INNER JOIN ventas_productos vp "
@@ -569,7 +479,7 @@ public class BaseDatos {
                     + "AND v.fecha_venta <= ? "
                     + "ORDER BY v.id_venta";
             
-            st = conn.prepareStatement(sql);
+            PreparedStatement st = conn.prepareStatement(sql);
             
             LocalDate fechaI = LocalDate.parse(fechaInicial);
             LocalDate fechaF = LocalDate.parse(fechaFinal);
@@ -577,7 +487,7 @@ public class BaseDatos {
             
             st.setDate(1, Date.valueOf(fechaI));
             st.setDate(2, Date.valueOf(fechaF));
-            rs = st.executeQuery();
+            ResultSet rs = st.executeQuery();
             
             while(rs.next()){
                 ReporteVentaProductoDTO dto = new ReporteVentaProductoDTO();
@@ -592,12 +502,6 @@ public class BaseDatos {
             
         } catch (SQLException ex) {
             ex.printStackTrace();
-        }finally{
-            try {
-                conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
         }
        return reporteVentaProducto;
     }

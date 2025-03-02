@@ -666,7 +666,8 @@
                 </Property>
               </Properties>
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblF2.setIcon(new ImageIcon(getClass().getResource(&quot;/f2.png&quot;)));&#xd;&#xa;"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="lblF2.setIcon(new ImageIcon(getClass().getResource(&quot;/f2.png&quot;)));"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="lblF2.setVisible(false);"/>
               </AuxValues>
             </Component>
           </SubComponents>

@@ -1,13 +1,9 @@
 package gui;
 
-import com.formdev.flatlaf.intellijthemes.FlatArcDarkIJTheme;
-import com.formdev.flatlaf.intellijthemes.FlatMonokaiProIJTheme;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatNightOwlIJTheme;
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import datos.BaseDatos;
 import dto.ReporteVentaProductoDTO;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -23,10 +19,7 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
-import javax.swing.Box;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,7 +27,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -45,7 +37,6 @@ import logica.Venta;
 import logica.VentaProductos;
 import net.miginfocom.swing.MigLayout;
 import raven.datetime.DatePicker;
-import raven.datetime.DateSelectionAble;
 import raven.datetime.event.DateSelectionEvent;
 import raven.datetime.event.DateSelectionListener;
 import reports.ReportGenerator;
@@ -470,6 +461,7 @@ public class Principal extends javax.swing.JFrame {
         ListProductos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jScrollPane3.setViewportView(ListProductos);
 
+        lblF2.setVisible(false);
         lblF2.setText("Cambiar cantidad");
         lblF2.setIcon(new ImageIcon(getClass().getResource("/f2.png")));
 
@@ -591,12 +583,14 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {
+        
         LocalDate[] dates = dp.getSelectedDateRange();
         new ReportGenerator().generarReporte(dates[0], dates[1]);
+        
     }
     private void txtBuscarProductoVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarProductoVentaKeyReleased
+        
         String criterio = txtBuscarProductoVenta.getText();
-
         ArrayList<Producto> prodCoincidenCriterio = base.obtenerProductosPorCriterio(criterio);
         modeloLista.removeAllElements();
         modeloLista.addAll(prodCoincidenCriterio);
@@ -636,6 +630,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_ListProductosValueChanged
 
     private void tblVentasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVentasKeyReleased
+        
         if (evt.getKeyCode() == KeyEvent.VK_F2) {
             try {
 
@@ -653,6 +648,7 @@ public class Principal extends javax.swing.JFrame {
                 //Seteamos el importe en la fila seleccionada
                 tblVentas.setValueAt((precioVenta * nuevaCantidad), filaSeleccionada, 4);
                 tblVentas.clearSelection();
+                lblF2.setVisible(false);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Cantidad no valida", "Error", JOptionPane.ERROR_MESSAGE);
@@ -689,6 +685,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
 
     private void btnRealizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarVentaActionPerformed
+        
         if (tblVentas.getRowCount() != 0) {
             //Obtenemos la fecha con LocalDate
             LocalDate fechaActual = LocalDate.now();
@@ -718,10 +715,10 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "No hay productos agregados", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-
     }//GEN-LAST:event_btnRealizarVentaActionPerformed
 
     private void txtPagoConKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagoConKeyReleased
+        
         if (!txtPagoCon.getText().isBlank() && actualizarMonto() > 0) {
             try {
                 double pagoCon = Double.parseDouble(txtPagoCon.getText());
@@ -743,6 +740,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPagoConKeyReleased
 
     private void txtBuscarProductoInventarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarProductoInventarioKeyReleased
+        
         String criterio = txtBuscarProductoInventario.getText();
 
         //consulta en la base de datos
@@ -756,6 +754,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarProductoInventarioKeyReleased
 
     private void btnEliminarArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarArticuloActionPerformed
+        
         System.out.println(tblProductos.getSelectedRow());
         if (tblProductos.getSelectedRow() != -1) {
             int opcion = JOptionPane.showOptionDialog(this.getContentPane(), "¿Desea eliminar este articulo?", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[]{"Si", "No"}, "No");
@@ -794,6 +793,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarArticuloActionPerformed
 
     private void btnAgregarExistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarExistenciaActionPerformed
+        
         if (tblProductos.getSelectedRow() != -1) {
 
             if (!txtIngresarAlInventario.getText().isBlank()) {
@@ -822,22 +822,27 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarExistenciaActionPerformed
 
     private void btnProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedoresActionPerformed
+        
         ProveedoresDialog modalProveedores = new ProveedoresDialog(this, true);
         modalProveedores.setLocationRelativeTo(null);
         modalProveedores.setDefaultCloseOperation(2);
         modalProveedores.setAlwaysOnTop(true);
         modalProveedores.setVisible(true);
+        
     }//GEN-LAST:event_btnProveedoresActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
+        
         CategoriasDialog modalCategorias = new CategoriasDialog(this, true);
         modalCategorias.setAlwaysOnTop(true);
         modalCategorias.setDefaultCloseOperation(2);
         modalCategorias.setLocationRelativeTo(null);
         modalCategorias.setVisible(true);
+        
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
+        
         ProductosDialog modalArticulos = new ProductosDialog(this, true);
         modalArticulos.setAlwaysOnTop(true);
         modalArticulos.setDefaultCloseOperation(2);
@@ -850,29 +855,11 @@ public class Principal extends javax.swing.JFrame {
             }
 
         });
+        
     }//GEN-LAST:event_btnProductosActionPerformed
 
     public static void main(String args[]) {
-        /*
-        try {
 
-            //javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
-            javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-            //javax.swing.UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminiumLookAndFeel");
-
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-         */
-
-        //FlatMonokaiProIJTheme.setup();
         FlatNightOwlIJTheme.setup();
 
         /* Create and display the form */
@@ -937,6 +924,7 @@ public class Principal extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cargarIconos() {
+        
         iconTabVentas = new ImageIcon(getClass().getResource("/ventas.png"));
         iconTabInventario = new ImageIcon(getClass().getResource("/inventario.png"));
         iconProductos = new ImageIcon(getClass().getResource("/agregar-producto.png"));
@@ -962,6 +950,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cargarModeloTablaInventario() {
+        
         modeloTablaInventario.setRowCount(0);
 
         for (Producto p : base.obtenerProductos()) {
@@ -973,6 +962,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cargarModeloTablaReportes(String fechaInicial, String fechaFinal) {
+        
         modeloTablaReportes.setRowCount(0);
 
         List<ReporteVentaProductoDTO> list = base.obtenerReporteVentaProducto(fechaInicial, fechaFinal);
@@ -1018,8 +1008,9 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-
+    
     private void cargarFotoTabInventario(String id) {
+        
         try {
             Producto selectedProduct = base.obtenerProducto(id);
             //Obtener foto
@@ -1033,12 +1024,14 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void addListSelectionListenerTblVentas() {
+        
         tblVentas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting() && tblVentas.getSelectedRow() != -1) {
                     int indiceFilaSeleccionada = tblVentas.getSelectedRow();
                     String idProducto = (String) modeloTablaVentas.getValueAt(indiceFilaSeleccionada, 0);
+                    lblF2.setVisible(true);
                     cargarFoto(idProducto);
                 }
             }
@@ -1046,6 +1039,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cargarFoto(String id) {
+        
         try {
             Producto selectedProduct = base.obtenerProducto(id);
             //Obtener foto
@@ -1059,19 +1053,23 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void mostrarInfoProducto(String selectedId) {
+        
         Producto producto = base.obtenerProducto(selectedId);
         txtClaveProducto.setText(producto.getIdProducto());
         txtNombreProducto.setText(producto.getNombreProducto());
         txtExistencia.setText(String.valueOf(producto.getExistenciasProducto()));
+        
     }
 
     private void limpiarTabInventario() {
+        
         txtClaveProducto.setText("");
         txtNombreProducto.setText("");
         txtExistencia.setText("");
         txtIngresarAlInventario.setText("");
         txtBuscarProductoInventario.setText("");
         lblFotoProdInventario.setIcon(null);
+        
     }
 
     private void cargarModeloTablaVentas(Producto p, double cantidad) {
@@ -1094,6 +1092,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private double actualizarMonto() {
+        
         double sumaImportes = 0D;
         if (tblVentas.getRowCount() >= 0) {
 
@@ -1108,6 +1107,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void addTableModelListenerModelTblVentas() {
+        
         modeloTablaVentas.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -1120,6 +1120,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void limpiarTabVentas() {
+        
         modeloTablaVentas.setRowCount(0);
         modeloLista.clear();
         txtBuscarProductoVenta.setText("");
@@ -1129,6 +1130,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void setButtonIcon(JButton boton, ImageIcon icono, int padding) {
+        
         int width = boton.getWidth() - padding;
         int height = boton.getHeight() - padding;
 
@@ -1136,6 +1138,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cargarDateChooser() {
+        
         dp = new DatePicker();
         JFormattedTextField editor = new JFormattedTextField();
         dp.setEditor(editor);
