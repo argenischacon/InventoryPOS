@@ -133,7 +133,7 @@ public class ProductosDialog extends javax.swing.JDialog {
 
         jLabel8.setText("Precio de Venta");
 
-        btnGestionarCategorias.setIcon(new javax.swing.ImageIcon("C:\\Users\\Argenis\\Documents\\NetBeansProjects\\sistemaMaven\\src\\main\\resources\\añadir.png")); // NOI18N
+        btnGestionarCategorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/añadir.png")));
         btnGestionarCategorias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGestionarCategoriasActionPerformed(evt);
@@ -154,7 +154,7 @@ public class ProductosDialog extends javax.swing.JDialog {
             }
         });
 
-        btnGestionarProveedores.setIcon(new javax.swing.ImageIcon("C:\\Users\\Argenis\\Documents\\NetBeansProjects\\sistemaMaven\\src\\main\\resources\\añadir.png")); // NOI18N
+        btnGestionarProveedores.setIcon(new javax.swing.ImageIcon(getClass().getResource("/añadir.png")));
         btnGestionarProveedores.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGestionarProveedoresActionPerformed(evt);

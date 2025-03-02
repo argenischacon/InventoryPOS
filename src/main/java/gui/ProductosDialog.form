@@ -278,8 +278,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnGestionarCategorias">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\resources\a&#xf1;adir.png"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.ImageIcon(getClass().getResource(&quot;/a&#xf1;adir.png&quot;))" type="code"/>
             </Property>
           </Properties>
           <Events>
@@ -314,8 +314,8 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnGestionarProveedores">
           <Properties>
-            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-              <Image iconType="2" name="C:\Users\Argenis\Documents\NetBeansProjects\sistemaMaven\src\main\resources\a&#xf1;adir.png"/>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+              <Connection code="new javax.swing.ImageIcon(getClass().getResource(&quot;/a&#xf1;adir.png&quot;))" type="code"/>
             </Property>
           </Properties>
           <Events>
