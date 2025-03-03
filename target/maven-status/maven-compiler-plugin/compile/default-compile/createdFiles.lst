@@ -1,9 +1,11 @@
 gui\Principal$13.class
+gui\Principal$23$1.class
 gui\ProductosDialog$2.class
 interfaces\CategoriaAddedListener.class
 gui\Principal$23.class
 gui\Principal$6.class
 logica\VentaProductos.class
+gui\Principal$27$1.class
 gui\Principal$9.class
 gui\Principal$10.class
 gui\ProductosDialog$5.class
@@ -11,6 +13,7 @@ interfaces\ProveedorAddedListener.class
 gui\CategoriasDialog$2.class
 gui\Principal$3.class
 gui\Principal$17.class
+gui\Principal$27.class
 gui\EditarProductosDialog$2.class
 logica\Proveedor.class
 gui\Principal.class
@@ -25,6 +28,7 @@ gui\ProductosDialog$3.class
 gui\Principal$14.class
 gui\Principal$20.class
 logica\Producto.class
+gui\Principal$26.class
 gui\CategoriasDialog.class
 gui\Principal$11.class
 gui\ProductosDialog$6.class
@@ -32,6 +36,7 @@ gui\Principal$7.class
 gui\ProveedoresDialog$3$1.class
 gui\EditarProductosDialog$4.class
 gui\CategoriasDialog$3.class
+gui\Principal$28.class
 gui\Principal$4.class
 gui\ProductosDialog$7.class
 enums\CmbToLoad.class

@@ -22,9 +22,7 @@ import logica.VentaProductos;
 
 public class BaseDatos {
 
-    //Connection conn = null;
-    //PreparedStatement st = null;
-    //ResultSet rs = null;
+
     private static final HikariDataSource dataSource;
 
     public BaseDatos() {

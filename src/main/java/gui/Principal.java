@@ -1,9 +1,12 @@
 package gui;
 
+import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.intellijthemes.materialthemeuilite.FlatNightOwlIJTheme;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import datos.BaseDatos;
 import dto.ReporteVentaProductoDTO;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -18,6 +21,7 @@ import java.io.InputStream;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
@@ -26,7 +30,9 @@ import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
@@ -52,6 +58,7 @@ public class Principal extends javax.swing.JFrame {
     private BaseDatos base;
     private String selectedId;
     private DatePicker dp;
+    private JProgressBar progressBarReportes;
 
     public Principal() {
         base = new BaseDatos();
@@ -121,6 +128,9 @@ public class Principal extends javax.swing.JFrame {
         txtBuscarProductoInventario = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         lblFotoProdInventario = new javax.swing.JLabel();
+        progressBarInventario = new javax.swing.JProgressBar();
+        progressBarInventario.setVisible(false);
+        progressBarInventario.setIndeterminate(true);
         panelVentas = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblVentas = new javax.swing.JTable();
@@ -140,6 +150,9 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         ListProductos = new javax.swing.JList<>();
         lblF2 = new javax.swing.JLabel();
+        progressBarVentas = new javax.swing.JProgressBar();
+        progressBarVentas.setVisible(false);
+        progressBarVentas.setIndeterminate(true);
         panelReportes = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
@@ -267,15 +280,17 @@ public class Principal extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                                 .addComponent(btnProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
                                             .addGroup(panelInventarioLayout.createSequentialGroup()
-                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txtBuscarProductoInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(panelInventarioLayout.createSequentialGroup()
                                                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(txtIngresarAlInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addGap(32, 32, 32)
-                                                .addComponent(btnAgregarExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                .addComponent(btnAgregarExistencia, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(panelInventarioLayout.createSequentialGroup()
+                                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txtBuscarProductoInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(29, 29, 29)
+                                                .addComponent(progressBarInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addComponent(lblFotoProdInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(panelInventarioLayout.createSequentialGroup()
@@ -301,6 +316,9 @@ public class Principal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelInventarioLayout.createSequentialGroup()
+                        .addComponent(lblFotoProdInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelInventarioLayout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -320,13 +338,12 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel6)
                             .addComponent(btnAgregarExistencia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtBuscarProductoInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel7)))
-                    .addGroup(panelInventarioLayout.createSequentialGroup()
-                        .addComponent(lblFotoProdInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtBuscarProductoInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel7))
+                            .addComponent(progressBarInventario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                 .addGroup(panelInventarioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelInventarioLayout.createSequentialGroup()
                         .addComponent(btnEditarArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -339,6 +356,11 @@ public class Principal extends javax.swing.JFrame {
         jTabbedPane1.addTab("Inventario", panelInventario);
 
         tblVentas.setModel(modeloTablaVentas);
+        tblVentas.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                tblVentasFocusLost(evt);
+            }
+        });
         tblVentas.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 tblVentasKeyReleased(evt);
@@ -489,8 +511,13 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jScrollPane3)
                             .addComponent(txtBuscarProductoVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE))
-                        .addGap(36, 36, 36)
-                        .addComponent(lblF2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(panelVentasLayout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(lblF2, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(panelVentasLayout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(progressBarVentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblFotoProdVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(71, 71, 71))))
@@ -499,12 +526,14 @@ public class Principal extends javax.swing.JFrame {
             panelVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelVentasLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addGroup(panelVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(panelVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblFotoProdVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelVentasLayout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtBuscarProductoVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(panelVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(progressBarVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtBuscarProductoVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE))
                         .addGroup(panelVentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelVentasLayout.createSequentialGroup()
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -533,7 +562,7 @@ public class Principal extends javax.swing.JFrame {
         panelDateChooser.setLayout(panelDateChooserLayout);
         panelDateChooserLayout.setHorizontalGroup(
             panelDateChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1067, Short.MAX_VALUE)
         );
         panelDateChooserLayout.setVerticalGroup(
             panelDateChooserLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -583,17 +612,30 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPdfActionPerformed(java.awt.event.ActionEvent evt) {
-        
+
         LocalDate[] dates = dp.getSelectedDateRange();
         new ReportGenerator().generarReporte(dates[0], dates[1]);
-        
+
     }
     private void txtBuscarProductoVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarProductoVentaKeyReleased
-        
+
         String criterio = txtBuscarProductoVenta.getText();
-        ArrayList<Producto> prodCoincidenCriterio = base.obtenerProductosPorCriterio(criterio);
-        modeloLista.removeAllElements();
-        modeloLista.addAll(prodCoincidenCriterio);
+        progressBarVentas.setVisible(true);
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                ArrayList<Producto> prodCoincidenCriterio = base.obtenerProductosPorCriterio(criterio);
+                modeloLista.removeAllElements();
+                modeloLista.addAll(prodCoincidenCriterio);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                progressBarVentas.setVisible(false);
+            }
+
+        }.execute();
 
     }//GEN-LAST:event_txtBuscarProductoVentaKeyReleased
 
@@ -603,6 +645,7 @@ public class Principal extends javax.swing.JFrame {
         double precioVenta = 0D;
         if (!(evt.getValueIsAdjusting()) && ListProductos.getSelectedIndex() != -1) {
             cargarFoto(ListProductos.getSelectedValue().getIdProducto());
+
             //Obtenemos el indice que corresponde al objeto seleccionado en la lista
             int indexRow = tableContainsProduct(ListProductos.getSelectedValue().getIdProducto());
 
@@ -630,7 +673,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_ListProductosValueChanged
 
     private void tblVentasKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tblVentasKeyReleased
-        
+
         if (evt.getKeyCode() == KeyEvent.VK_F2) {
             try {
 
@@ -648,7 +691,6 @@ public class Principal extends javax.swing.JFrame {
                 //Seteamos el importe en la fila seleccionada
                 tblVentas.setValueAt((precioVenta * nuevaCantidad), filaSeleccionada, 4);
                 tblVentas.clearSelection();
-                lblF2.setVisible(false);
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Cantidad no valida", "Error", JOptionPane.ERROR_MESSAGE);
@@ -685,7 +727,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarVentaActionPerformed
 
     private void btnRealizarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRealizarVentaActionPerformed
-        
+
         if (tblVentas.getRowCount() != 0) {
             //Obtenemos la fecha con LocalDate
             LocalDate fechaActual = LocalDate.now();
@@ -718,7 +760,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRealizarVentaActionPerformed
 
     private void txtPagoConKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagoConKeyReleased
-        
+
         if (!txtPagoCon.getText().isBlank() && actualizarMonto() > 0) {
             try {
                 double pagoCon = Double.parseDouble(txtPagoCon.getText());
@@ -740,7 +782,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtPagoConKeyReleased
 
     private void txtBuscarProductoInventarioKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarProductoInventarioKeyReleased
-        
+
         String criterio = txtBuscarProductoInventario.getText();
 
         //consulta en la base de datos
@@ -754,7 +796,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_txtBuscarProductoInventarioKeyReleased
 
     private void btnEliminarArticuloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarArticuloActionPerformed
-        
+
         System.out.println(tblProductos.getSelectedRow());
         if (tblProductos.getSelectedRow() != -1) {
             int opcion = JOptionPane.showOptionDialog(this.getContentPane(), "¿Desea eliminar este articulo?", "Confirmacion", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, new Object[]{"Si", "No"}, "No");
@@ -793,7 +835,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEditarArticuloActionPerformed
 
     private void btnAgregarExistenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarExistenciaActionPerformed
-        
+
         if (tblProductos.getSelectedRow() != -1) {
 
             if (!txtIngresarAlInventario.getText().isBlank()) {
@@ -822,27 +864,27 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarExistenciaActionPerformed
 
     private void btnProveedoresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedoresActionPerformed
-        
+
         ProveedoresDialog modalProveedores = new ProveedoresDialog(this, true);
         modalProveedores.setLocationRelativeTo(null);
         modalProveedores.setDefaultCloseOperation(2);
         modalProveedores.setAlwaysOnTop(true);
         modalProveedores.setVisible(true);
-        
+
     }//GEN-LAST:event_btnProveedoresActionPerformed
 
     private void btnCategoriasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCategoriasActionPerformed
-        
+
         CategoriasDialog modalCategorias = new CategoriasDialog(this, true);
         modalCategorias.setAlwaysOnTop(true);
         modalCategorias.setDefaultCloseOperation(2);
         modalCategorias.setLocationRelativeTo(null);
         modalCategorias.setVisible(true);
-        
+
     }//GEN-LAST:event_btnCategoriasActionPerformed
 
     private void btnProductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProductosActionPerformed
-        
+
         ProductosDialog modalArticulos = new ProductosDialog(this, true);
         modalArticulos.setAlwaysOnTop(true);
         modalArticulos.setDefaultCloseOperation(2);
@@ -855,12 +897,16 @@ public class Principal extends javax.swing.JFrame {
             }
 
         });
-        
+
     }//GEN-LAST:event_btnProductosActionPerformed
 
-    public static void main(String args[]) {
+    private void tblVentasFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_tblVentasFocusLost
+        lblF2.setVisible(false);
+    }//GEN-LAST:event_tblVentasFocusLost
 
-        FlatNightOwlIJTheme.setup();
+    public static void main(String args[]) {
+        FlatLaf.setGlobalExtraDefaults(Collections.singletonMap("@accentColor", "#c9ad1e"));
+        FlatMacDarkLaf.setup();
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -911,6 +957,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel panelInventario;
     private javax.swing.JPanel panelReportes;
     private javax.swing.JPanel panelVentas;
+    private javax.swing.JProgressBar progressBarInventario;
+    private javax.swing.JProgressBar progressBarVentas;
     private javax.swing.JTable tblProductos;
     private javax.swing.JTable tblVentas;
     private javax.swing.JTextField txtBuscarProductoInventario;
@@ -924,7 +972,7 @@ public class Principal extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void cargarIconos() {
-        
+
         iconTabVentas = new ImageIcon(getClass().getResource("/ventas.png"));
         iconTabInventario = new ImageIcon(getClass().getResource("/inventario.png"));
         iconProductos = new ImageIcon(getClass().getResource("/agregar-producto.png"));
@@ -950,7 +998,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cargarModeloTablaInventario() {
-        
+
         modeloTablaInventario.setRowCount(0);
 
         for (Producto p : base.obtenerProductos()) {
@@ -962,7 +1010,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cargarModeloTablaReportes(String fechaInicial, String fechaFinal) {
-        
+
         modeloTablaReportes.setRowCount(0);
 
         List<ReporteVentaProductoDTO> list = base.obtenerReporteVentaProducto(fechaInicial, fechaFinal);
@@ -1002,15 +1050,28 @@ public class Principal extends javax.swing.JFrame {
                     //Obtener la clave de selectedRow
                     selectedId = (tblProductos.getValueAt(selectedRow, 0)).toString();
                     //mostrar informacion del producto obtenido por su id
-                    mostrarInfoProducto(selectedId);
-                    cargarFotoTabInventario(selectedId);
+                    progressBarInventario.setVisible(true);
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() throws Exception {
+                            mostrarInfoProducto(selectedId);
+                            cargarFotoTabInventario(selectedId);
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            progressBarInventario.setVisible(false);
+                        }
+
+                    }.execute();
                 }
             }
         });
     }
-    
+
     private void cargarFotoTabInventario(String id) {
-        
+
         try {
             Producto selectedProduct = base.obtenerProducto(id);
             //Obtener foto
@@ -1024,7 +1085,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void addListSelectionListenerTblVentas() {
-        
+
         tblVentas.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -1038,38 +1099,49 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 
+    InputStream inputStream = null;
+
     private void cargarFoto(String id) {
-        
-        try {
-            Producto selectedProduct = base.obtenerProducto(id);
-            //Obtener foto
-            InputStream inputStream = base.buscarFoto(selectedProduct);
-            BufferedImage bufferedImage = ImageIO.read(inputStream);
-            ImageIcon imageIcon = new ImageIcon(bufferedImage);
-            lblFotoProdVentas.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(lblFotoProdVentas.getWidth(), lblFotoProdVentas.getHeight(), Image.SCALE_DEFAULT)));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
+        progressBarVentas.setVisible(true);
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                Producto selectedProduct = base.obtenerProducto(id);
+                //Obtener foto
+                inputStream = base.buscarFoto(selectedProduct);
+                BufferedImage bufferedImage = ImageIO.read(inputStream);
+                ImageIcon imageIcon = new ImageIcon(bufferedImage);
+                lblFotoProdVentas.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(lblFotoProdVentas.getWidth(), lblFotoProdVentas.getHeight(), Image.SCALE_DEFAULT)));
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                progressBarVentas.setVisible(false);
+            }
+
+        }.execute();
+
     }
 
     private void mostrarInfoProducto(String selectedId) {
-        
+
         Producto producto = base.obtenerProducto(selectedId);
         txtClaveProducto.setText(producto.getIdProducto());
         txtNombreProducto.setText(producto.getNombreProducto());
         txtExistencia.setText(String.valueOf(producto.getExistenciasProducto()));
-        
+
     }
 
     private void limpiarTabInventario() {
-        
+
         txtClaveProducto.setText("");
         txtNombreProducto.setText("");
         txtExistencia.setText("");
         txtIngresarAlInventario.setText("");
         txtBuscarProductoInventario.setText("");
         lblFotoProdInventario.setIcon(null);
-        
+
     }
 
     private void cargarModeloTablaVentas(Producto p, double cantidad) {
@@ -1092,7 +1164,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private double actualizarMonto() {
-        
+
         double sumaImportes = 0D;
         if (tblVentas.getRowCount() >= 0) {
 
@@ -1107,7 +1179,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void addTableModelListenerModelTblVentas() {
-        
+
         modeloTablaVentas.addTableModelListener(new TableModelListener() {
             @Override
             public void tableChanged(TableModelEvent e) {
@@ -1120,7 +1192,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void limpiarTabVentas() {
-        
+
         modeloTablaVentas.setRowCount(0);
         modeloLista.clear();
         txtBuscarProductoVenta.setText("");
@@ -1130,7 +1202,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void setButtonIcon(JButton boton, ImageIcon icono, int padding) {
-        
+
         int width = boton.getWidth() - padding;
         int height = boton.getHeight() - padding;
 
@@ -1138,7 +1210,12 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void cargarDateChooser() {
-        
+
+        progressBarReportes = new JProgressBar();
+        progressBarReportes.setPreferredSize(new Dimension(140, 30));
+        progressBarReportes.setIndeterminate(true);
+        progressBarReportes.setVisible(true);
+
         dp = new DatePicker();
         JFormattedTextField editor = new JFormattedTextField();
         dp.setEditor(editor);
@@ -1150,7 +1227,21 @@ public class Principal extends javax.swing.JFrame {
 
                 LocalDate[] dates = dp.getSelectedDateRange();
                 if (dates != null) {
-                    cargarModeloTablaReportes(dates[0].toString(), dates[1].toString());
+                    progressBarReportes.setVisible(true);
+                    new SwingWorker<Void, Void>() {
+
+                        @Override
+                        protected Void doInBackground() throws Exception {
+                            cargarModeloTablaReportes(dates[0].toString(), dates[1].toString());
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            progressBarReportes.setVisible(false);
+                        }
+
+                    }.execute();
                 }
             }
         });
@@ -1169,6 +1260,8 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         panelDateChooser.add(btnPdf);
+        panelDateChooser.add(progressBarReportes);
+
     }
 
 }
